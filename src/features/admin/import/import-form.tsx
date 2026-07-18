@@ -44,7 +44,12 @@ export function CatalogImportForm() {
             className="rounded-md border border-input bg-background px-3 py-2"
             onChange={async (event) => {
               const file = event.currentTarget.files?.[0];
-              if (file) setCsv(await file.text());
+              if (!file) return;
+              if (file.size > 1024 * 1024) {
+                setCsv("");
+                return;
+              }
+              setCsv(await file.text());
             }}
             type="file"
           />

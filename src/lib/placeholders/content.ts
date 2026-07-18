@@ -1,5 +1,5 @@
 export const placeholderCopy = {
-  workingName: "PME Commerce",
+  workingName: "PMEGreen",
   storefrontHeadline: "Traditional products, presented with care",
   storefrontIntro:
     "A premium storefront framework for oils, snacks, powders, honey, pickles, and personal-care products from a Tamil Nadu single-seller business.",

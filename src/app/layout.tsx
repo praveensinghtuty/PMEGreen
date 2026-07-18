@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
-    default: "PME Commerce",
-    template: "%s | PME Commerce",
+    default: "PMEGreen",
+    template: "%s | PMEGreen",
   },
   description:
     "A mobile-first commerce foundation for a Tamil Nadu single-seller traditional products store.",

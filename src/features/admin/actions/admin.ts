@@ -49,6 +49,21 @@ function validateImageFile(file: File) {
   return allowedTypes.includes(file.type) && file.size <= 5 * 1024 * 1024;
 }
 
+function imageExtensionForMime(type: string) {
+  switch (type) {
+    case "image/jpeg":
+      return "jpg";
+    case "image/png":
+      return "png";
+    case "image/svg+xml":
+      return "svg";
+    case "image/webp":
+      return "webp";
+    default:
+      return null;
+  }
+}
+
 export async function saveCategoryAction(formData: FormData) {
   await requireAdmin("/admin/categories");
   const parsed = adminCategorySchema.safeParse({
@@ -293,7 +308,8 @@ export async function uploadProductImageAction(formData: FormData) {
     adminError("/admin/products", "invalid-upload");
   }
 
-  const extension = file.name.split(".").pop()?.toLowerCase() ?? "bin";
+  const extension = imageExtensionForMime(file.type);
+  if (!extension) adminError("/admin/products", "invalid-upload");
   const storagePath = `${parsed.data.productId}/${crypto.randomUUID()}.${extension}`;
   const supabase = await createClient();
   const { error: uploadError } = await supabase.storage
@@ -392,7 +408,8 @@ export async function uploadSiteAssetAction(formData: FormData) {
   }
 
   const safeSettingKey = settingKey as "business.logo" | "payment.upi_qr";
-  const extension = file.name.split(".").pop()?.toLowerCase() ?? "bin";
+  const extension = imageExtensionForMime(file.type);
+  if (!extension) adminError("/admin/settings", "invalid-upload");
   const storagePath = `admin/${safeSettingKey}/${crypto.randomUUID()}.${extension}`;
   const supabase = await createClient();
   const { error: uploadError } = await supabase.storage

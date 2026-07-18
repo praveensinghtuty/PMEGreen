@@ -62,6 +62,36 @@ values
   ('40000000-0000-4000-8000-000000000002', 'customer')
 on conflict (user_id, role) do nothing;
 
+insert into public.categories (
+  id,
+  name,
+  slug,
+  is_active
+)
+values (
+  '40000000-0000-4000-8000-000000000101',
+  'Phase 4 Verification Category',
+  'phase-4-verification-category',
+  true
+)
+on conflict (id) do nothing;
+
+insert into public.products (
+  id,
+  category_id,
+  name,
+  slug,
+  status
+)
+values (
+  '40000000-0000-4000-8000-000000000102',
+  '40000000-0000-4000-8000-000000000101',
+  'Phase 4 Verification Product',
+  'phase-4-verification-product',
+  'active'
+)
+on conflict (id) do nothing;
+
 insert into public.product_variants (
   id,
   product_id,
@@ -77,12 +107,12 @@ insert into public.product_variants (
 )
 values (
   '40000000-0000-4000-8000-000000000201',
-  '30000000-0000-4000-8000-000000000101',
+  '40000000-0000-4000-8000-000000000102',
   'Phase 4 quantity limit option',
   1,
   'piece',
   100,
-  0,
+  200,
   false,
   false,
   true,
@@ -97,23 +127,23 @@ select set_config(
 );
 
 select public.add_active_variant_to_cart(
-  '30000000-0000-4000-8000-000000000201',
+  '40000000-0000-4000-8000-000000000201',
   1
 );
 select public.add_active_variant_to_cart(
-  '30000000-0000-4000-8000-000000000201',
+  '40000000-0000-4000-8000-000000000201',
   1
 );
 select public.add_active_product_to_wishlist(
-  '30000000-0000-4000-8000-000000000101'
+  '40000000-0000-4000-8000-000000000102'
 );
 select public.add_active_product_to_wishlist(
-  '30000000-0000-4000-8000-000000000101'
+  '40000000-0000-4000-8000-000000000102'
 );
 
 select public.add_active_variant_to_cart(
   '40000000-0000-4000-8000-000000000201',
-  99
+  97
 );
 
 do $$
@@ -133,14 +163,14 @@ end $$;
 
 insert into phase_4_check_results (check_name, passed)
 select
-  'cart_duplicate_add_increments_quantity',
+  'cart_duplicate_add_and_limit_setup_quantity',
   exists (
     select 1
     from public.carts
     join public.cart_items on cart_items.cart_id = carts.id
     where carts.user_id = auth.uid()
-      and cart_items.variant_id = '30000000-0000-4000-8000-000000000201'
-      and cart_items.quantity = 2
+      and cart_items.variant_id = '40000000-0000-4000-8000-000000000201'
+      and cart_items.quantity = 99
   );
 
 insert into phase_4_check_results (check_name, passed)
@@ -151,7 +181,7 @@ select
     from public.wishlists
     join public.wishlist_items on wishlist_items.wishlist_id = wishlists.id
     where wishlists.user_id = auth.uid()
-      and wishlist_items.product_id = '30000000-0000-4000-8000-000000000101'
+      and wishlist_items.product_id = '40000000-0000-4000-8000-000000000102'
   );
 
 select set_config(

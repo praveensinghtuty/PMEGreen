@@ -1,48 +1,19 @@
-# PME Commerce
+# PMEGreen
 
-Mobile-first commerce application for a small single-seller traditional products business in Tamil Nadu, India.
+Mobile-first commerce application for a single-seller traditional products business in Tamil Nadu, India.
 
-This repository is currently complete through **Phase 3B: Catalog**. Later phases will add shopping, orders, admin workflows, import/export, and production hardening.
-
-## What Is Implemented
-
-- Next.js App Router project with React and strict TypeScript.
-- Tailwind CSS design tokens and responsive base layouts.
-- Storefront, account, and admin shell routes.
-- Basic UI primitive foundation.
-- Supabase browser/server client factories.
-- Environment validation for public app/Supabase variables.
-- Error and not-found foundations.
-- Centralized placeholder copy and asset references.
-- Local placeholder SVG assets for logo, product, category, banner, and UPI QR replacement.
-- Supabase database migration for the approved Phase 2 schema.
-- Database constraints, indexes, profile synchronization, RLS policies, and storage policies.
-- Google OAuth application flow and callback route.
-- Phone OTP application flow gated behind explicit SMS-provider configuration.
-- Protected account route and admin route with server-side role checks.
-- Secure first-admin bootstrap documentation.
-- Responsive storefront header, footer, desktop navigation, and mobile bottom navigation.
-- Home page storefront structure with hero, category, featured-product empty state, principles, story, and contact sections.
-- Placeholder Shop, Categories, Search, About, and Contact pages.
-- Reusable storefront components for sections, page headers, product cards, category cards, empty states, and skeleton loading.
-- Public catalog queries for active categories, active storefront products, active variants, and product images.
-- Category listing and detail routes.
-- Product listing, filtering, sorting, pagination, and detail routes.
-- Catalog search by product name.
-- Product image gallery with local placeholder fallback.
-- Variant selection UI for active variants only.
-- SEO metadata for category and product detail pages.
-
-No product data has been imported. The supplied `product-catalog.csv` remains unchanged and is reserved for a later import phase.
+The application is complete through Phase 8 production hardening. It includes storefront browsing, authenticated cart and wishlist, Tamil Nadu-only address management, checkout with COD/manual UPI, customer orders, admin catalog/order/settings management, and CSV catalog import infrastructure.
 
 ## Requirements
 
-- Node.js compatible with the installed dependencies. The current environment used Node `v20.11.0`.
-- npm.
+- Node.js 20+
+- npm
+- Supabase CLI
+- A Supabase project for hosted auth, database, and storage
 
 ## Environment
 
-Create `.env.local` from `.env.example`:
+Create `.env.local` from `.env.example`.
 
 ```bash
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
@@ -53,96 +24,81 @@ SUPABASE_SERVICE_ROLE_KEY=
 SUPABASE_PROJECT_ID=
 ```
 
-Supabase public values are required for authentication flows and protected routes. `SUPABASE_SERVICE_ROLE_KEY` is server-only and is not required for normal sign-in.
-
-Do not commit real secrets.
-
-## Supabase
-
-Apply migrations:
-
-```bash
-supabase start
-supabase db push
-```
-
-Generate database types after migrations are applied:
-
-```bash
-npm run types:supabase:local
-```
-
-For full migration, RLS verification, provider setup, and first-admin bootstrap instructions, read [Phase 2: Database and Authentication](docs/phase-2-database-auth.md).
+Do not commit real secrets. `SUPABASE_SERVICE_ROLE_KEY` is server-only and is not used by normal customer/admin UI flows.
 
 ## Development
 
-Install dependencies:
-
 ```bash
 npm install
-```
-
-Run the development server:
-
-```bash
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open `http://localhost:3000`. Supabase auth redirects are configured for port `3000`.
+
+## Database
+
+Apply migrations to the linked project:
+
+```bash
+npx supabase db push --linked
+```
+
+Generate types:
+
+```bash
+npx supabase gen types typescript --project-id <project-id> > src/types/supabase.ts
+```
+
+On Windows, convert generated types to UTF-8 if the redirect writes UTF-16.
 
 ## Verification
 
 ```bash
+npm run format
 npm run format:check
 npm run lint
 npm run typecheck
+npm test
 npm run build
+npx supabase db lint --linked
+npx supabase migration list --linked
 ```
 
-Use `npm run format` to apply formatting.
-
-The manual RLS check requires a running Supabase database:
-
-```bash
-psql "$SUPABASE_DB_URL" -f supabase/tests/phase_2_rls_checks.sql
-```
-
-For a linked Supabase project, the same check can run through the Supabase CLI:
+RLS and workflow checks:
 
 ```bash
 npx supabase db query --linked --file supabase/tests/phase_2_rls_checks.sql
 npx supabase db query --linked --file supabase/tests/phase_2_profile_sync_check.sql
+npx supabase db query --linked --file supabase/tests/phase_4_cart_wishlist_check.sql
+npx supabase db query --linked --file supabase/tests/phase_5_checkout_orders_check.sql
+npx supabase db query --linked --file supabase/tests/phase_6_admin_checks.sql
+npx supabase db query --linked --file supabase/tests/phase_7a_catalog_import_check.sql
 ```
 
-## Catalog Development Seed
+## Documentation
 
-Phase 3B includes a small, isolated, idempotent development seed for route and RLS visibility checks. It is not a production catalog seed and is not derived from `product-catalog.csv`.
+Production documentation is in `docs/`:
 
-Apply the development seed to a linked Supabase project:
+- [Architecture](docs/architecture.md)
+- [Database](docs/database.md)
+- [API and Server Actions](docs/api.md)
+- [Authentication](docs/authentication.md)
+- [Deployment](docs/deployment.md)
+- [Environment](docs/environment.md)
+- [Admin Guide](docs/admin-guide.md)
+- [Developer Guide](docs/developer-guide.md)
+- [Security](docs/security.md)
+- [Troubleshooting](docs/troubleshooting.md)
+- [Roadmap](docs/roadmap.md)
+- [Changelog](docs/changelog.md)
 
-```bash
-npx supabase db query --linked --file supabase/seed/dev_phase_3b_catalog.sql
-```
+## Catalog Import
 
-Remove the development seed:
+- Source file: `product-catalog.csv`
+- Prepared Phase 7B file: `normalized-product-catalog-phase-7b.csv`
+- Real import must be run from `/admin/import` by an authenticated admin after dry-run approval.
+- No images are imported unless explicit filename mappings are added.
 
-```bash
-npx supabase db query --linked --file supabase/seed/dev_phase_3b_catalog_cleanup.sql
-```
+## Production Checklist
 
-## Placeholder Replacement
-
-Placeholder references are centralized in:
-
-- `src/lib/placeholders/content.ts`
-- `public/placeholders/`
-
-Replace these when final business name, logo, product photography, banners, category imagery, UPI QR, contact details, and verified business copy are supplied.
-
-## Catalog Note
-
-`product-catalog.csv` has been inspected only. It includes slash-separated variants and prices, some incomplete rows, and a misspelled `Prodoucts` header. Normalization, import preview, warnings, and seed/import data belong to a later phase.
-
-## Phase 3B Scope Note
-
-Phase 3B intentionally does not implement cart, wishlist, checkout, orders, admin catalog management, CSV import, reviews, ratings, or production product seeding. Empty product states are expected until real catalog data is imported in a later phase.
+Read [Deployment](docs/deployment.md) before launch. Required manual setup includes Supabase OAuth redirect URLs, optional phone OTP SMS provider, storage buckets, first admin bootstrap, backup plan, and final business assets/settings.

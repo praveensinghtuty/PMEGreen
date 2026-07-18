@@ -1,0 +1,74 @@
+product_name,product_slug,category_name,category_slug,variant_name,price,sku,stock_quantity,status
+Groundnut Oil,groundnut-oil,Oils,oils,5 l,1575,GROUNDNUT-OIL-5L,0,draft
+Groundnut Oil,groundnut-oil,Oils,oils,3 l,945,GROUNDNUT-OIL-3L,0,draft
+Groundnut Oil,groundnut-oil,Oils,oils,1 l,315,GROUNDNUT-OIL-1L,0,draft
+Groundnut Oil,groundnut-oil,Oils,oils,500 ml,165,GROUNDNUT-OIL-500ML,0,draft
+Sesame Oil,sesame-oil,Oils,oils,1 l,525,SESAME-OIL-1L,0,draft
+Sesame Oil,sesame-oil,Oils,oils,500 ml,265,SESAME-OIL-500ML,0,draft
+Sesame Oil,sesame-oil,Oils,oils,250 ml,145,SESAME-OIL-250ML,0,draft
+Coconut Oil,coconut-oil,Oils,oils,1 l,595,COCONUT-OIL-1L,0,draft
+Coconut Oil,coconut-oil,Oils,oils,500 ml,320,COCONUT-OIL-500ML,0,draft
+Coconut Oil,coconut-oil,Oils,oils,250 ml,165,COCONUT-OIL-250ML,0,draft
+Olive Oil,olive-oil,Oils,oils,100 ml,209,OLIVE-OIL-100ML,0,draft
+Neem Oil,neem-oil,Oils,oils,100 ml,60,NEEM-OIL-100ML,0,draft
+Mustard Oil,mustard-oil,Oils,oils,205 ml,79,MUSTARD-OIL-205ML,0,draft
+Castor Oil,castor-oil,Oils,oils,100 ml,65,CASTOR-OIL-100ML,0,draft
+Castor Oil,castor-oil,Oils,oils,250 ml,155,CASTOR-OIL-250ML,0,draft
+Mahua Oil,mahua-oil,Oils,oils,500 ml,169,MAHUA-OIL-500ML,0,draft
+Deepam Oil,deepam-oil,Oils,oils,500 ml,169,DEEPAM-OIL-500ML,0,draft
+Health Mix Laddu,health-mix-laddu,Traditional Snacks & Laddus,traditional-snacks-laddus,1 piece,20,HEALTH-MIX-LADDU-1PIECE,0,draft
+Groundnut Laddu,groundnut-laddu,Traditional Snacks & Laddus,traditional-snacks-laddus,1 piece,20,GROUNDNUT-LADDU-1PIECE,0,draft
+Sesame Laddu,sesame-laddu,Traditional Snacks & Laddus,traditional-snacks-laddus,1 piece,20,SESAME-LADDU-1PIECE,0,draft
+Karuppu Kavuni Laddu,karuppu-kavuni-laddu,Traditional Snacks & Laddus,traditional-snacks-laddus,1 piece,20,KARUPPU-KAVUNI-LADDU-1PIECE,0,draft
+Karuppu Ulundhu Laddu,karuppu-ulundhu-laddu,Traditional Snacks & Laddus,traditional-snacks-laddus,1 piece,20,KARUPPU-ULUNDHU-LADDU-1PIECE,0,draft
+Paitam Paruppu Laddu,paitam-paruppu-laddu,Traditional Snacks & Laddus,traditional-snacks-laddus,1 piece,20,PAITAM-PARUPPU-LADDU-1PIECE,0,draft
+Whole Nuts Laddu,whole-nuts-laddu,Traditional Snacks & Laddus,traditional-snacks-laddus,1 piece,30,WHOLE-NUTS-LADDU-1PIECE,0,draft
+Kapu laddu,kapu-laddu,Traditional Snacks & Laddus,traditional-snacks-laddus,1 piece,20,KAPU-LADDU-1PIECE,0,draft
+Ragi laddu,ragi-laddu,Traditional Snacks & Laddus,traditional-snacks-laddus,1 piece,20,RAGI-LADDU-1PIECE,0,draft
+Thenai laddu,thenai-laddu,Traditional Snacks & Laddus,traditional-snacks-laddus,1 piece,20,THENAI-LADDU-1PIECE,0,draft
+Pure Natural Ghee,pure-natural-ghee,Grocery,grocery,1 l,1167,PURE-NATURAL-GHEE-1L,0,draft
+Pure Natural Ghee,pure-natural-ghee,Grocery,grocery,500 ml,642,PURE-NATURAL-GHEE-500ML,0,draft
+Pure Natural Ghee,pure-natural-ghee,Grocery,grocery,300 ml,423,PURE-NATURAL-GHEE-300ML,0,draft
+ABC Malt,abc-malt,Health Mixes,health-mixes,200 g,345,ABC-MALT-200G,0,draft
+Banana Malt,banana-malt,Health Mixes,health-mixes,200 g,345,BANANA-MALT-200G,0,draft
+Raagi malt,raagi-malt,Health Mixes,health-mixes,500 g,517,RAAGI-MALT-500G,0,draft
+Health Mix Powder,health-mix-powder,Health Mixes,health-mixes,1 kg,927,HEALTH-MIX-POWDER-1KG,0,draft
+Health Mix Powder,health-mix-powder,Health Mixes,health-mixes,500 g,517,HEALTH-MIX-POWDER-500G,0,draft
+Kanji Upma Pongal Mix,kanji-upma-pongal-mix,Health Mixes,health-mixes,500 g,293,KANJI-UPMA-PONGAL-MIX-500G,0,draft
+Black Kavuni Kanji Flour,black-kavuni-kanji-flour,Health Mixes,health-mixes,500 g,317,BLACK-KAVUNI-KANJI-FLOUR-500G,0,draft
+Multi Millets Dosa Mix,multi-millets-dosa-mix,Health Mixes,health-mixes,500 g,217,MULTI-MILLETS-DOSA-MIX-500G,0,draft
+Karuppu Ulundhu Mix,karuppu-ulundhu-mix,Health Mixes,health-mixes,100 g,85,KARUPPU-ULUNDHU-MIX-100G,0,draft
+Karuppu Ulundhu Mix,karuppu-ulundhu-mix,Health Mixes,health-mixes,500 g,395,KARUPPU-ULUNDHU-MIX-500G,0,draft
+Raagi Powder,raagi-powder,Powders & Podi,powders-podi,1 kg,165,RAAGI-POWDER-1KG,0,draft
+Kambu Powder,kambu-powder,Powders & Podi,powders-podi,1 kg,165,KAMBU-POWDER-1KG,0,draft
+Onion Thokku,onion-thokku,Pickles,pickles,250 g,285,ONION-THOKKU-250G,0,draft
+Tomato Thokku,tomato-thokku,Pickles,pickles,250 g,265,TOMATO-THOKKU-250G,0,draft
+Pirandai Thokku,pirandai-thokku,Pickles,pickles,250 g,385,PIRANDAI-THOKKU-250G,0,draft
+Honey Nuts Mix,honey-nuts-mix,Health Mixes,health-mixes,500 g,642,HONEY-NUTS-MIX-500G,0,draft
+Mountain Natural Honey,mountain-natural-honey,Honey,honey,300 g,355,MOUNTAIN-NATURAL-HONEY-300G,0,draft
+Mountain Natural Honey,mountain-natural-honey,Honey,honey,500 g,545,MOUNTAIN-NATURAL-HONEY-500G,0,draft
+Himalayan Salt,himalayan-salt,Grocery,grocery,1 kg,125,HIMALAYAN-SALT-1KG,0,draft
+Himalayan Salt,himalayan-salt,Grocery,grocery,1.5 kg,195,HIMALAYAN-SALT-1-5KG,0,draft
+Pirandai Podi,pirandai-podi,Powders & Podi,powders-podi,250 g,285,PIRANDAI-PODI-250G,0,draft
+Murungai Podi,murungai-podi,Powders & Podi,powders-podi,250 g,265,MURUNGAI-PODI-250G,0,draft
+Karuveppilai Podi,karuveppilai-podi,Powders & Podi,powders-podi,250 g,235,KARUVEPPILAI-PODI-250G,0,draft
+Bamboo Brush,bamboo-brush,Personal Care,personal-care,1 piece,85,BAMBOO-BRUSH-1PIECE,0,draft
+Coconut Soap,coconut-soap,Personal Care,personal-care,1 piece,145,COCONUT-SOAP-1PIECE,0,draft
+Charcoal Soap,charcoal-soap,Personal Care,personal-care,1 piece,145,CHARCOAL-SOAP-1PIECE,0,draft
+Siyakkai Powder,siyakkai-powder,Personal Care,personal-care,200 g,265,SIYAKKAI-POWDER-200G,0,draft
+nalagumavu,nalagumavu,Personal Care,personal-care,200 g,385,NALAGUMAVU-200G,0,draft
+Premium Hair Oil,premium-hair-oil,Oils,oils,250 ml,485,PREMIUM-HAIR-OIL-250ML,0,draft
+Mulligai Hair Oil,mulligai-hair-oil,Oils,oils,without oil,115,MULLIGAI-HAIR-OIL-WITHOUT-OIL,0,draft
+Mulligai Hair Oil,mulligai-hair-oil,Oils,oils,with oil,385,MULLIGAI-HAIR-OIL-WITH-OIL,0,draft
+Naatu Sakarai,naatu-sakarai,Grocery,grocery,1 kg,155,NAATU-SAKARAI-1KG,0,draft
+Naatu Sakarai,naatu-sakarai,Grocery,grocery,500 g,90,NAATU-SAKARAI-500G,0,draft
+Masala Naatu Sakarai,masala-naatu-sakarai,Grocery,grocery,1 kg,245,MASALA-NAATU-SAKARAI-1KG,0,draft
+Masala Naatu Sakarai,masala-naatu-sakarai,Grocery,grocery,500 g,145,MASALA-NAATU-SAKARAI-500G,0,draft
+Panam Karkandu,panam-karkandu,Grocery,grocery,500 g,495,PANAM-KARKANDU-500G,0,draft
+Panam Karkandu,panam-karkandu,Grocery,grocery,300 g,285,PANAM-KARKANDU-300G,0,draft
+Kambuu ribbon pakuda,kambuu-ribbon-pakuda,Traditional Snacks & Laddus,traditional-snacks-laddus,500 g,1,KAMBUU-RIBBON-PAKUDA-500G,0,draft
+Thenai muruku,thenai-muruku,Traditional Snacks & Laddus,traditional-snacks-laddus,500 g,1,THENAI-MURUKU-500G,0,draft
+thuya mali rice muruku,thuya-mali-rice-muruku,Traditional Snacks & Laddus,traditional-snacks-laddus,500 g,1,THUYA-MALI-RICE-MURUKU-500G,0,draft
+Mango pickle,mango-pickle,Pickles,pickles,500 g,1,MANGO-PICKLE-500G,0,draft
+Amala pickle,amala-pickle,Pickles,pickles,500 g,1,AMALA-PICKLE-500G,0,draft
+Narthanka pickle,narthanka-pickle,Pickles,pickles,500 g,1,NARTHANKA-PICKLE-500G,0,draft

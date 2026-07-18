@@ -1,4 +1,4 @@
-PME COMMERCE — MASTER CODEX PROJECT PROMPT
+PMEGREEN — MASTER CODEX PROJECT PROMPT
 
 0. ROLE AND OPERATING MODE
 
@@ -43,7 +43,7 @@ actually verified.
 
 1. PROJECT SUMMARY
 
-Working project name: PME Commerce.
+Working project name: PMEGreen.
 
 The working name is a placeholder and must not be deeply hardcoded
 throughout the application. The final business name, logo, product

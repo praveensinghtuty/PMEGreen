@@ -453,3 +453,25 @@ test("catalog import supports category creation in dry-run output", () => {
 
   assert.deepEqual(plan.categoriesToCreate, [{ name: "Honey", slug: "honey" }]);
 });
+
+test("normalized Phase 7B catalog is import-clean and unpublished", () => {
+  const normalizedCatalog = require("node:fs").readFileSync(
+    "normalized-product-catalog-phase-7b.csv",
+    "utf8",
+  );
+  const rows = normalizedCatalog
+    .trim()
+    .split(/\r?\n/)
+    .slice(1)
+    .map((line) => line.split(","));
+  const skus = rows.map((row) => row[6]);
+  const statuses = new Set(rows.map((row) => row[8]));
+  const plan = catalogImport.buildCatalogImportPlan(normalizedCatalog);
+
+  assert.equal(plan.errors.length, 0);
+  assert.equal(plan.warnings.length, 0);
+  assert.equal(plan.productsToCreate, 55);
+  assert.equal(plan.variantsToCreate, 73);
+  assert.equal(new Set(skus).size, skus.length);
+  assert.deepEqual([...statuses], ["draft"]);
+});
