@@ -1,4 +1,7 @@
+import Link from "next/link";
+
 import { StoreShell } from "@/components/layout/store-shell";
+import { Button } from "@/components/ui/button";
 import { signOut } from "@/features/auth/actions/sign-out";
 import { requireUser } from "@/features/auth/queries/current-user";
 
@@ -25,9 +28,17 @@ export default async function AccountPage() {
         <h1 className="mt-3 text-3xl font-semibold">Customer account</h1>
         <p className="mt-4 max-w-2xl leading-7 text-muted-foreground">
           You are signed in through Supabase Auth. Wishlist and cart features
-          are available now. Address, checkout, and order features continue in
-          later phases.
+          are available now. Address, checkout, and order history features are
+          available for registered customers.
         </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Button asChild variant="outline">
+            <Link href="/addresses">Saved addresses</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/orders">Orders</Link>
+          </Button>
+        </div>
         <dl className="mt-6 rounded-lg border border-border bg-card p-5 text-sm shadow-sm">
           <div className="grid gap-1 sm:grid-cols-[8rem_1fr]">
             <dt className="font-medium text-muted-foreground">User ID</dt>

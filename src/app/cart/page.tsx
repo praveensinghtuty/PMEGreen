@@ -83,9 +83,12 @@ export default async function CartPage({
                 </div>
               </dl>
               <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                Checkout, shipping, payment, and order creation are implemented
-                in later phases.
+                Shipping, payment method, and final validation happen during
+                checkout.
               </p>
+              <Button asChild className="mt-5 w-full">
+                <Link href="/checkout">Checkout</Link>
+              </Button>
               <form action={clearCartAction} className="mt-5">
                 <input name="returnPath" type="hidden" value="/cart" />
                 <Button className="w-full" type="submit" variant="outline">

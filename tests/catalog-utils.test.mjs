@@ -42,6 +42,12 @@ function loadTypeScriptModule(relativePath) {
 const params = loadTypeScriptModule("src/features/catalog/utils/params.ts");
 const format = loadTypeScriptModule("src/features/catalog/utils/format.ts");
 const cartSchemas = loadTypeScriptModule("src/features/cart/schemas/cart.ts");
+const addressSchemas = loadTypeScriptModule(
+  "src/features/addresses/schemas/address.ts",
+);
+const checkoutSchemas = loadTypeScriptModule(
+  "src/features/checkout/schemas/checkout.ts",
+);
 const wishlistSchemas = loadTypeScriptModule(
   "src/features/wishlist/schemas/wishlist.ts",
 );
@@ -196,6 +202,69 @@ test("wishlist validation requires a product UUID and safe return path", () => {
     wishlistSchemas.wishlistMutationSchema.safeParse({
       productId: "../admin",
       returnPath: "https://example.com",
+    }).success,
+    false,
+  );
+});
+
+test("address validation enforces Tamil Nadu customer address basics", () => {
+  const valid = addressSchemas.addressMutationSchema.safeParse({
+    addressLine1: "12 Market Street",
+    city: "Chennai",
+    district: "Chennai",
+    fullName: "Customer One",
+    isDefault: true,
+    label: "Home",
+    phone: "9876543210",
+    postalCode: "600001",
+    returnPath: "/checkout",
+    state: "Kerala",
+  });
+
+  assert.equal(valid.success, true);
+  assert.equal(valid.data.state, "Tamil Nadu");
+
+  const invalid = addressSchemas.addressMutationSchema.safeParse({
+    addressLine1: "",
+    city: "",
+    district: "",
+    fullName: "Customer One",
+    label: "Home",
+    phone: "12345",
+    postalCode: "abc",
+    returnPath: "https://example.com",
+    state: "Tamil Nadu",
+  });
+
+  assert.equal(invalid.success, false);
+});
+
+test("checkout validation requires UPI reference only for UPI orders", () => {
+  assert.equal(
+    checkoutSchemas.checkoutSubmissionSchema.safeParse({
+      addressId: "30000000-0000-4000-8000-000000000301",
+      idempotencyKey: "phase5-idempotency-key",
+      paymentMethod: "cod",
+    }).success,
+    true,
+  );
+
+  assert.equal(
+    checkoutSchemas.checkoutSubmissionSchema.safeParse({
+      addressId: "30000000-0000-4000-8000-000000000301",
+      idempotencyKey: "phase5-idempotency-key",
+      paymentMethod: "upi",
+      upiReference: "UPI123456",
+    }).success,
+    true,
+  );
+
+  assert.equal(
+    checkoutSchemas.checkoutSubmissionSchema.safeParse({
+      addressId: "30000000-0000-4000-8000-000000000301",
+      idempotencyKey: "phase5-idempotency-key",
+      paymentMethod: "upi",
+      upiReference: "",
     }).success,
     false,
   );

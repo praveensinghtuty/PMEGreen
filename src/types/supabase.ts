@@ -239,6 +239,45 @@ export type Database = {
           },
         ];
       };
+      checkout_idempotency_keys: {
+        Row: {
+          created_at: string;
+          id: string;
+          idempotency_key: string;
+          order_id: string | null;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          idempotency_key: string;
+          order_id?: string | null;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          idempotency_key?: string;
+          order_id?: string | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "checkout_idempotency_keys_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "checkout_idempotency_keys_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       homepage_sections: {
         Row: {
           configuration: Json;
@@ -817,6 +856,19 @@ export type Database = {
         Returns: boolean;
       };
       is_admin: { Args: never; Returns: boolean };
+      place_customer_order: {
+        Args: {
+          p_address_id: string;
+          p_customer_notes?: string;
+          p_idempotency_key?: string;
+          p_payment_method: Database["public"]["Enums"]["payment_method"];
+          p_upi_transaction_reference?: string;
+        };
+        Returns: {
+          order_id: string;
+          order_number: string;
+        }[];
+      };
     };
     Enums: {
       app_role: "customer" | "admin";

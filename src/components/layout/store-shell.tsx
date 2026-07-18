@@ -169,6 +169,16 @@ export async function StoreShell({ children }: { children: ReactNode }) {
                   Wishlist
                 </Link>
               </li>
+              <li>
+                <Link className="hover:text-foreground" href="/addresses">
+                  Addresses
+                </Link>
+              </li>
+              <li>
+                <Link className="hover:text-foreground" href="/orders">
+                  Orders
+                </Link>
+              </li>
             </ul>
           </nav>
           <nav aria-label="Footer company navigation">
