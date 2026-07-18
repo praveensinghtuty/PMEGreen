@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder logo</title>
+  <desc id="desc">A simple placeholder mark for future brand artwork.</desc>
+  <rect width="160" height="160" rx="20" fill="#29533a"/>
+  <path d="M80 38c22 16 33 34 33 53 0 20-14 33-33 33S47 111 47 91c0-19 11-37 33-53Z" fill="#fffdf8"/>
+  <path d="M80 58v47" stroke="#29533a" stroke-width="8" stroke-linecap="round"/>
+</svg>

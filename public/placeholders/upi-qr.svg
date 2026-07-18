@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder UPI QR code</title>
+  <desc id="desc">Placeholder only. Replace with the real UPI QR before enabling UPI payment display.</desc>
+  <rect width="400" height="400" fill="#fffdf8"/>
+  <rect x="40" y="40" width="320" height="320" fill="#f3eee4" stroke="#252019" stroke-width="8"/>
+  <rect x="80" y="80" width="70" height="70" fill="#252019"/>
+  <rect x="250" y="80" width="70" height="70" fill="#252019"/>
+  <rect x="80" y="250" width="70" height="70" fill="#252019"/>
+  <path d="M190 190h45v45h-45zm70 0h30v30h-30zm-70 75h95v30h-95z" fill="#252019"/>
+</svg>

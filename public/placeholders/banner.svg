@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="700" viewBox="0 0 1600 700" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder banner image</title>
+  <desc id="desc">Neutral banner placeholder for future brand photography.</desc>
+  <rect width="1600" height="700" fill="#f3eee4"/>
+  <rect x="100" y="100" width="1400" height="500" rx="36" fill="#fffdf8" stroke="#ded4c5" stroke-width="10"/>
+  <path d="M1010 460c80-180 190-250 330-210 46 13 82 36 110 65v145H1010Z" fill="#29533a"/>
+  <circle cx="1230" cy="270" r="74" fill="#d6a84f"/>
+</svg>

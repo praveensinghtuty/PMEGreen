@@ -1,0 +1,42 @@
+{
+  "name": "pme-commerce",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "types:supabase:local": "supabase gen types typescript --local > src/types/supabase.ts",
+    "types:supabase:remote": "supabase gen types typescript --project-id %SUPABASE_PROJECT_ID% > src/types/supabase.ts"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "latest",
+    "@supabase/ssr": "0.5.2",
+    "@supabase/supabase-js": "2.45.4",
+    "class-variance-authority": "latest",
+    "clsx": "latest",
+    "lucide-react": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "server-only": "latest",
+    "tailwind-merge": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "eslint": "9.39.1",
+    "eslint-config-next": "latest",
+    "prettier": "latest",
+    "supabase": "^2.109.1",
+    "tailwindcss": "latest",
+    "typescript": "latest"
+  }
+}

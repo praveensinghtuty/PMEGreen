@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder category image</title>
+  <desc id="desc">Neutral category placeholder for future photography.</desc>
+  <rect width="800" height="500" fill="#fffdf8"/>
+  <rect x="60" y="70" width="680" height="360" rx="28" fill="#f3eee4" stroke="#ded4c5" stroke-width="8"/>
+  <circle cx="292" cy="250" r="80" fill="#29533a"/>
+  <circle cx="420" cy="250" r="80" fill="#d6a84f"/>
+  <circle cx="548" cy="250" r="80" fill="#8d4f2f"/>
+</svg>
