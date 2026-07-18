@@ -54,6 +54,9 @@ const checkoutSchemas = loadTypeScriptModule(
 const wishlistSchemas = loadTypeScriptModule(
   "src/features/wishlist/schemas/wishlist.ts",
 );
+const catalogImport = loadTypeScriptModule(
+  "src/features/admin/import/catalog-import.ts",
+);
 
 test("parseSlug accepts clean storefront slugs only", () => {
   assert.equal(params.parseSlug("cold-pressed-oil").success, true);
@@ -331,4 +334,122 @@ test("admin order and settings validation protects operational fields", () => {
     }).success,
     true,
   );
+});
+
+test("catalog import rejects invalid CSV headers and missing required columns", () => {
+  const invalid = catalogImport.buildCatalogImportPlan(
+    "Product,Quantity,Price,Unexpected\nOil,500 ml,100,x",
+  );
+
+  assert.equal(
+    invalid.errors.some((error) => error.code === "unknown-column"),
+    true,
+  );
+
+  const missing = catalogImport.buildCatalogImportPlan(
+    "Product,Price\nOil,100",
+  );
+  assert.equal(
+    missing.errors.some((error) => error.code === "missing-column"),
+    true,
+  );
+});
+
+test("catalog import accepts supplied CSV header alias and reports dry-run counts", () => {
+  const plan = catalogImport.buildCatalogImportPlan(
+    "Prodoucts,Quantity,Price,Category\nGroundnut Oil,1 liter/500ml,315/165,Oils",
+  );
+
+  assert.equal(plan.errors.length, 0);
+  assert.equal(plan.productsToCreate, 1);
+  assert.equal(plan.variantsToCreate, 2);
+  assert.deepEqual(plan.categoriesToCreate, [{ name: "Oils", slug: "oils" }]);
+  assert.equal(plan.products[0].slug, "groundnut-oil");
+});
+
+test("catalog import validates duplicate SKU, duplicate slug, prices, stock and booleans", () => {
+  const plan = catalogImport.buildCatalogImportPlan(
+    [
+      "Product,Product Slug,Quantity,Price,Category,SKU,Stock,Is Featured",
+      "Oil,oil,500 ml,100,Oils,DUP,1,true",
+      "Oil,oil,1 liter,abc,Oils,DUP,-1,maybe",
+      "Different Oil,oil,250 ml,50,Oils,OK,2,false",
+    ].join("\n"),
+  );
+
+  assert.equal(
+    plan.errors.some((error) => error.code === "duplicate-sku"),
+    true,
+  );
+  assert.equal(
+    plan.errors.some((error) => error.code === "duplicate-slug"),
+    true,
+  );
+  assert.equal(
+    plan.errors.some((error) => error.code === "invalid-price"),
+    true,
+  );
+  assert.equal(
+    plan.errors.some((error) => error.code === "invalid-stock"),
+    true,
+  );
+  assert.equal(
+    plan.errors.some((error) => error.code === "invalid-boolean"),
+    true,
+  );
+});
+
+test("catalog import validates category and image references before writes", () => {
+  const plan = catalogImport.buildCatalogImportPlan(
+    "Product,Quantity,Price,Image Filename\nOil,500 ml,100,missing.png",
+    { imageFilenames: new Set(["other.png"]) },
+  );
+
+  assert.equal(
+    plan.errors.some((error) => error.code === "missing-category"),
+    true,
+  );
+  assert.equal(
+    plan.errors.some((error) => error.code === "missing-image"),
+    true,
+  );
+});
+
+test("catalog import dry-run does not create a payload when validation fails", () => {
+  const plan = catalogImport.buildCatalogImportPlan(
+    "Product,Quantity,Price,Category\nOil,500 ml,nope,Oils",
+  );
+
+  assert.throws(() => catalogImport.planToRpcPayload(plan), /invalid plan/);
+});
+
+test("catalog import planning is idempotent for existing products and SKUs", () => {
+  const plan = catalogImport.buildCatalogImportPlan(
+    [
+      "Product,Product Slug,Quantity,Price,Category,SKU",
+      "Oil,oil,500 ml,100,Oils,OIL-500",
+    ].join("\n"),
+    {
+      existingCategorySlugs: new Set(["oils"]),
+      existingProductSlugs: new Set(["oil"]),
+      existingSkus: new Set(["OIL-500"]),
+    },
+  );
+
+  assert.equal(plan.errors.length, 0);
+  assert.equal(plan.productsToCreate, 0);
+  assert.equal(plan.variantsToCreate, 0);
+  assert.equal(
+    plan.warnings.some((warning) => warning.code === "existing-sku"),
+    true,
+  );
+});
+
+test("catalog import supports category creation in dry-run output", () => {
+  const plan = catalogImport.buildCatalogImportPlan(
+    "Product,Quantity,Price,Category\nHoney,250 g,180,Honey",
+    { existingCategorySlugs: new Set(["oils"]) },
+  );
+
+  assert.deepEqual(plan.categoriesToCreate, [{ name: "Honey", slug: "honey" }]);
 });

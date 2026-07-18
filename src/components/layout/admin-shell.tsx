@@ -1,12 +1,13 @@
 import {
   FolderTree,
   Home,
+  Import,
+  Images,
   LayoutDashboard,
   Package,
   ReceiptText,
   Settings,
   Users,
-  Images,
 } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -15,6 +16,7 @@ const adminLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/categories", label: "Categories", icon: FolderTree },
+  { href: "/admin/import", label: "Import", icon: Import },
   { href: "/admin/orders", label: "Orders", icon: ReceiptText },
   { href: "/admin/customers", label: "Customers", icon: Users },
   { href: "/admin/banners", label: "Banners", icon: Images },

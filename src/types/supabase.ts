@@ -851,6 +851,7 @@ export type Database = {
         Args: { p_quantity?: number; p_variant_id: string };
         Returns: string;
       };
+      admin_import_catalog: { Args: { p_payload: Json }; Returns: Json };
       admin_update_order: {
         Args: {
           p_admin_notes?: string;
