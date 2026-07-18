@@ -45,6 +45,21 @@ function shippingAddressSnapshot(value: Json): ShippingAddressSnapshot {
   };
 }
 
+function safeExternalUrl(value: null | string) {
+  if (!value) {
+    return null;
+  }
+
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:"
+      ? url.toString()
+      : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function getCustomerOrders(): Promise<CustomerOrderListItem[]> {
   const user = await requireUser("/orders");
   const supabase = await createClient();
@@ -152,7 +167,7 @@ export async function getCustomerOrderDetail(
     subtotal: order.subtotal,
     totalAmount: order.total_amount,
     trackingNumber: order.tracking_number,
-    trackingUrl: order.tracking_url,
+    trackingUrl: safeExternalUrl(order.tracking_url),
     upiTransactionReference: order.upi_transaction_reference,
   };
 }

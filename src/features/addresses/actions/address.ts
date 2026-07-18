@@ -78,13 +78,27 @@ export async function saveAddressAction(formData: FormData) {
 
   const user = await requireActionUser(parsed.data.returnPath);
   const supabase = await createClient();
+  const { data: existingAddress, error: existingAddressError } = parsed.data.id
+    ? await supabase
+        .from("addresses")
+        .select("id, is_default")
+        .eq("id", parsed.data.id)
+        .eq("user_id", user.id)
+        .maybeSingle()
+    : { data: null, error: null };
+
+  if (existingAddressError || (parsed.data.id && !existingAddress)) {
+    redirectWithError(parsed.data.returnPath, "save-failed");
+  }
+
   const { count: existingAddressCount } = await supabase
     .from("addresses")
     .select("id", { count: "exact", head: true })
     .eq("user_id", user.id);
   const shouldBeDefault =
     parsed.data.isDefault ||
-    (!parsed.data.id && (existingAddressCount ?? 0) === 0);
+    (!parsed.data.id && (existingAddressCount ?? 0) === 0) ||
+    Boolean(existingAddress?.is_default);
 
   if (shouldBeDefault) {
     await clearOtherDefaults(user.id, parsed.data.id);
@@ -106,7 +120,11 @@ export async function saveAddressAction(formData: FormData) {
   };
 
   const result = parsed.data.id
-    ? await supabase.from("addresses").update(row).eq("id", parsed.data.id)
+    ? await supabase
+        .from("addresses")
+        .update(row)
+        .eq("id", parsed.data.id)
+        .eq("user_id", user.id)
     : await supabase.from("addresses").insert(row);
 
   if (result.error) {
@@ -128,8 +146,19 @@ export async function deleteAddressAction(formData: FormData) {
     redirectWithError("/addresses", "delete-failed");
   }
 
-  await requireActionUser(parsed.data.returnPath);
+  const user = await requireActionUser(parsed.data.returnPath);
   const supabase = await createClient();
+  const { data: address, error: addressError } = await supabase
+    .from("addresses")
+    .select("id, is_default")
+    .eq("id", parsed.data.id)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (addressError || !address) {
+    redirectWithError(parsed.data.returnPath, "delete-failed");
+  }
+
   const { count: orderCount, error: orderError } = await supabase
     .from("orders")
     .select("id", { count: "exact", head: true })
@@ -142,10 +171,29 @@ export async function deleteAddressAction(formData: FormData) {
   const { error } = await supabase
     .from("addresses")
     .delete()
-    .eq("id", parsed.data.id);
+    .eq("id", parsed.data.id)
+    .eq("user_id", user.id);
 
   if (error) {
     redirectWithError(parsed.data.returnPath, "delete-failed");
+  }
+
+  if (address.is_default) {
+    const { data: replacement } = await supabase
+      .from("addresses")
+      .select("id")
+      .eq("user_id", user.id)
+      .order("updated_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (replacement) {
+      await supabase
+        .from("addresses")
+        .update({ is_default: true })
+        .eq("id", replacement.id)
+        .eq("user_id", user.id);
+    }
   }
 
   revalidatePath("/addresses");
@@ -164,12 +212,24 @@ export async function setDefaultAddressAction(formData: FormData) {
   }
 
   const user = await requireActionUser(parsed.data.returnPath);
-  await clearOtherDefaults(user.id, parsed.data.id);
   const supabase = await createClient();
+  const { data: address, error: addressError } = await supabase
+    .from("addresses")
+    .select("id")
+    .eq("id", parsed.data.id)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (addressError || !address) {
+    redirectWithError(parsed.data.returnPath, "default-failed");
+  }
+
+  await clearOtherDefaults(user.id, parsed.data.id);
   const { error } = await supabase
     .from("addresses")
     .update({ is_default: true })
-    .eq("id", parsed.data.id);
+    .eq("id", parsed.data.id)
+    .eq("user_id", user.id);
 
   if (error) {
     redirectWithError(parsed.data.returnPath, "default-failed");

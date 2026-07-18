@@ -92,6 +92,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
           url: absoluteUrl(`/products/${product.slug}`),
         }
       : null;
+  const structuredDataJson = structuredData
+    ? JSON.stringify(structuredData).replaceAll("<", "\\u003c")
+    : null;
 
   return (
     <StoreShell>
@@ -141,19 +144,19 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm leading-6 text-muted-foreground">
-                    Cart, checkout, payment, and order creation are implemented
-                    in later phases. This page only supports browsing and
-                    variant review.
+                    Choose an active variant to add it to your cart. Checkout
+                    revalidates current price, stock, shipping, and address
+                    details before order placement.
                   </p>
                 </CardContent>
               </Card>
             </div>
           </div>
         </Section>
-        {structuredData ? (
+        {structuredDataJson ? (
           <script
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(structuredData),
+              __html: structuredDataJson,
             }}
             type="application/ld+json"
           />

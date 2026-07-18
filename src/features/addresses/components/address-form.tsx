@@ -4,17 +4,23 @@ import { Button } from "@/components/ui/button";
 
 type AddressFormProps = {
   address?: CustomerAddress;
+  framed?: boolean;
   returnPath?: string;
 };
 
 export function AddressForm({
   address,
+  framed = true,
   returnPath = "/addresses",
 }: AddressFormProps) {
   return (
     <form
       action={saveAddressAction}
-      className="grid gap-4 rounded-lg border border-border bg-card p-4 shadow-sm sm:grid-cols-2 sm:p-5"
+      className={
+        framed
+          ? "grid gap-4 rounded-lg border border-border bg-card p-4 shadow-sm sm:grid-cols-2 sm:p-5"
+          : "grid gap-4 sm:grid-cols-2"
+      }
     >
       <input name="id" type="hidden" value={address?.id ?? ""} />
       <input name="returnPath" type="hidden" value={returnPath} />

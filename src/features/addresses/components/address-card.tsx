@@ -2,6 +2,7 @@ import {
   deleteAddressAction,
   setDefaultAddressAction,
 } from "@/features/addresses/actions/address";
+import { AddressForm } from "@/features/addresses/components/address-form";
 import type { CustomerAddress } from "@/features/addresses/types/address";
 import { Button } from "@/components/ui/button";
 
@@ -63,6 +64,18 @@ export function AddressCard({
           {address.state} - {address.postalCode}
         </span>
       </address>
+      <details className="mt-4 rounded-md border border-border bg-background p-3">
+        <summary className="cursor-pointer text-sm font-semibold">
+          Edit address
+        </summary>
+        <div className="mt-4">
+          <AddressForm
+            address={address}
+            framed={false}
+            returnPath={returnPath}
+          />
+        </div>
+      </details>
     </article>
   );
 }
