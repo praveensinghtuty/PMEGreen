@@ -2,7 +2,7 @@
 
 Mobile-first commerce application for a small single-seller traditional products business in Tamil Nadu, India.
 
-This repository is currently complete through **Phase 3A: Storefront Framework**. Later phases will add live catalog queries, product detail pages, shopping, orders, admin workflows, import/export, and production hardening.
+This repository is currently complete through **Phase 3B: Catalog**. Later phases will add shopping, orders, admin workflows, import/export, and production hardening.
 
 ## What Is Implemented
 
@@ -25,6 +25,13 @@ This repository is currently complete through **Phase 3A: Storefront Framework**
 - Home page storefront structure with hero, category, featured-product empty state, principles, story, and contact sections.
 - Placeholder Shop, Categories, Search, About, and Contact pages.
 - Reusable storefront components for sections, page headers, product cards, category cards, empty states, and skeleton loading.
+- Public catalog queries for active categories, active storefront products, active variants, and product images.
+- Category listing and detail routes.
+- Product listing, filtering, sorting, pagination, and detail routes.
+- Catalog search by product name.
+- Product image gallery with local placeholder fallback.
+- Variant selection UI for active variants only.
+- SEO metadata for category and product detail pages.
 
 No product data has been imported. The supplied `product-catalog.csv` remains unchanged and is reserved for a later import phase.
 
@@ -107,6 +114,22 @@ npx supabase db query --linked --file supabase/tests/phase_2_rls_checks.sql
 npx supabase db query --linked --file supabase/tests/phase_2_profile_sync_check.sql
 ```
 
+## Catalog Development Seed
+
+Phase 3B includes a small, isolated, idempotent development seed for route and RLS visibility checks. It is not a production catalog seed and is not derived from `product-catalog.csv`.
+
+Apply the development seed to a linked Supabase project:
+
+```bash
+npx supabase db query --linked --file supabase/seed/dev_phase_3b_catalog.sql
+```
+
+Remove the development seed:
+
+```bash
+npx supabase db query --linked --file supabase/seed/dev_phase_3b_catalog_cleanup.sql
+```
+
 ## Placeholder Replacement
 
 Placeholder references are centralized in:
@@ -120,6 +143,6 @@ Replace these when final business name, logo, product photography, banners, cate
 
 `product-catalog.csv` has been inspected only. It includes slash-separated variants and prices, some incomplete rows, and a misspelled `Prodoucts` header. Normalization, import preview, warnings, and seed/import data belong to a later phase.
 
-## Phase 3A Scope Note
+## Phase 3B Scope Note
 
-Phase 3A intentionally does not implement cart, checkout, orders, admin catalog management, product import, or live product queries. Empty product states are expected until Phase 3B adds public catalog data access.
+Phase 3B intentionally does not implement cart, wishlist, checkout, orders, admin catalog management, CSV import, reviews, ratings, or production product seeding. Empty product states are expected until real catalog data is imported in a later phase.

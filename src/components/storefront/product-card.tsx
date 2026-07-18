@@ -10,6 +10,7 @@ type ProductCardProps = {
   imageAlt?: string;
   priceLabel?: string;
   categoryLabel?: string;
+  variantSummary?: string;
   unavailable?: boolean;
 };
 
@@ -21,6 +22,7 @@ export function ProductCard({
   name,
   priceLabel,
   unavailable,
+  variantSummary,
 }: ProductCardProps) {
   return (
     <Link
@@ -44,6 +46,11 @@ export function ProductCard({
           </p>
         ) : null}
         <h3 className="mt-1 text-base font-semibold">{name}</h3>
+        {variantSummary ? (
+          <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
+            {variantSummary}
+          </p>
+        ) : null}
         <div className="mt-3 flex items-center justify-between gap-3">
           <p className="text-sm font-semibold text-primary">
             {priceLabel ?? "Price pending"}

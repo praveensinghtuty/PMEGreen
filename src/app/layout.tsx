@@ -21,10 +21,6 @@ export const metadata: Metadata = {
   },
   description:
     "A mobile-first commerce foundation for a Tamil Nadu single-seller traditional products store.",
-  robots: {
-    index: false,
-    follow: false,
-  },
 };
 
 export const viewport: Viewport = {

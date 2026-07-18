@@ -1,42 +1,64 @@
-import Link from "next/link";
-
 import { StoreShell } from "@/components/layout/store-shell";
-import { EmptyState } from "@/components/storefront/empty-state";
 import { PageHeader } from "@/components/storefront/page-header";
-import { ProductCardSkeleton } from "@/components/storefront/skeleton";
-import { Button } from "@/components/ui/button";
+import {
+  CatalogControls,
+  Pagination,
+} from "@/features/catalog/components/catalog-controls";
+import { ProductGrid } from "@/features/catalog/components/product-grid";
+import {
+  getPublicCategories,
+  getPublicProductCards,
+} from "@/features/catalog/queries/catalog";
+import { parseCatalogSearchParams } from "@/features/catalog/utils/params";
 
 export const metadata = {
   title: "Shop",
   description: "Browse products from the storefront catalog.",
 };
 
-export default function ShopPage() {
+export default async function ShopPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = parseCatalogSearchParams(await searchParams);
+  const [categories, catalogPage] = await Promise.all([
+    getPublicCategories(),
+    getPublicProductCards({
+      categorySlug: params.category,
+      page: params.page,
+      query: params.query,
+      sort: params.sort,
+    }),
+  ]);
+
   return (
     <StoreShell>
       <PageHeader
-        description="The shop framework is ready. Product listing queries and approved catalog data are intentionally deferred to Phase 3B."
+        description="Browse active storefront products. Draft and inactive products are excluded by query filters and database RLS."
         eyebrow="Shop"
         title="All products"
       />
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <ProductCardSkeleton />
-          <ProductCardSkeleton />
-          <ProductCardSkeleton />
-          <ProductCardSkeleton />
-        </div>
+        <CatalogControls
+          categories={categories}
+          query={params.query}
+          selectedCategory={params.category}
+          sort={params.sort}
+        />
         <div className="mt-8">
-          <EmptyState
-            action={
-              <Button asChild variant="outline">
-                <Link href="/categories">Browse categories</Link>
-              </Button>
-            }
-            description="No products are displayed until the public catalog query layer and approved product import are implemented."
-            title="No products available yet"
+          <ProductGrid
+            emptyDescription="No active products match the current filters. Try a different category or search term."
+            products={catalogPage.products}
           />
         </div>
+        <Pagination
+          category={params.category}
+          page={catalogPage.page}
+          query={params.query}
+          sort={params.sort}
+          totalPages={catalogPage.totalPages}
+        />
       </main>
     </StoreShell>
   );
