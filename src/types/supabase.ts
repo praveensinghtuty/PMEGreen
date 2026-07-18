@@ -804,6 +804,14 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      add_active_product_to_wishlist: {
+        Args: { p_product_id: string };
+        Returns: string;
+      };
+      add_active_variant_to_cart: {
+        Args: { p_quantity?: number; p_variant_id: string };
+        Returns: string;
+      };
       has_role: {
         Args: { required_role: Database["public"]["Enums"]["app_role"] };
         Returns: boolean;

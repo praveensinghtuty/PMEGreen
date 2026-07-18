@@ -41,6 +41,10 @@ function loadTypeScriptModule(relativePath) {
 
 const params = loadTypeScriptModule("src/features/catalog/utils/params.ts");
 const format = loadTypeScriptModule("src/features/catalog/utils/format.ts");
+const cartSchemas = loadTypeScriptModule("src/features/cart/schemas/cart.ts");
+const wishlistSchemas = loadTypeScriptModule(
+  "src/features/wishlist/schemas/wishlist.ts",
+);
 
 test("parseSlug accepts clean storefront slugs only", () => {
   assert.equal(params.parseSlug("cold-pressed-oil").success, true);
@@ -139,5 +143,60 @@ test("variant availability follows active storefront stock rules", () => {
       unit: null,
     }),
     true,
+  );
+});
+
+test("cart add validation accepts only valid variants and bounded quantities", () => {
+  const valid = cartSchemas.cartAddSchema.safeParse({
+    quantity: "2",
+    returnPath: "/products/test-product",
+    variantId: "30000000-0000-4000-8000-000000000201",
+  });
+
+  assert.equal(valid.success, true);
+  assert.equal(valid.data.quantity, 2);
+
+  const invalid = cartSchemas.cartAddSchema.safeParse({
+    quantity: "100",
+    returnPath: "//evil.example",
+    variantId: "not-a-uuid",
+  });
+
+  assert.equal(invalid.success, false);
+});
+
+test("cart item quantity validation rejects invalid mutation inputs", () => {
+  assert.equal(
+    cartSchemas.cartItemQuantitySchema.safeParse({
+      itemId: "30000000-0000-4000-8000-000000000301",
+      quantity: 1,
+      returnPath: "/cart",
+    }).success,
+    true,
+  );
+  assert.equal(
+    cartSchemas.cartItemQuantitySchema.safeParse({
+      itemId: "30000000-0000-4000-8000-000000000301",
+      quantity: 0,
+      returnPath: "/cart",
+    }).success,
+    false,
+  );
+});
+
+test("wishlist validation requires a product UUID and safe return path", () => {
+  assert.equal(
+    wishlistSchemas.wishlistMutationSchema.safeParse({
+      productId: "30000000-0000-4000-8000-000000000101",
+      returnPath: "/shop",
+    }).success,
+    true,
+  );
+  assert.equal(
+    wishlistSchemas.wishlistMutationSchema.safeParse({
+      productId: "../admin",
+      returnPath: "https://example.com",
+    }).success,
+    false,
   );
 });

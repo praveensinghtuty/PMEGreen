@@ -1,6 +1,5 @@
 import "server-only";
 
-import { getSupabasePublicConfig } from "@/lib/config/env";
 import { createClient } from "@/lib/supabase/server";
 import type { Tables } from "@/types/supabase";
 import type {
@@ -17,6 +16,7 @@ import {
   getVariantSummary,
   isVariantAvailable,
 } from "@/features/catalog/utils/format";
+import { toPublicStorageUrl } from "@/features/catalog/utils/storage";
 
 const PAGE_SIZE = 12;
 const MAX_PUBLIC_PRODUCTS = 240;
@@ -56,32 +56,6 @@ type PublicImageRow = Pick<
   | "sort_order"
   | "storage_path"
 >;
-
-function toPublicStorageUrl(
-  bucket: "product-images" | "site-assets",
-  path: string,
-) {
-  if (/^https?:\/\//i.test(path)) {
-    return path;
-  }
-
-  if (path.startsWith("/")) {
-    return path;
-  }
-
-  const config = getSupabasePublicConfig();
-
-  if (!config) {
-    return path;
-  }
-
-  const encodedPath = path
-    .split("/")
-    .map((segment) => encodeURIComponent(segment))
-    .join("/");
-
-  return `${config.url}/storage/v1/object/public/${bucket}/${encodedPath}`;
-}
 
 function mapCategory(row: PublicCategoryRow): CatalogCategory {
   return {

@@ -6,13 +6,18 @@ import { ProductCard } from "@/components/storefront/product-card";
 import { Button } from "@/components/ui/button";
 import type { CatalogProductCard } from "@/features/catalog/types/catalog";
 import { formatMoney } from "@/features/catalog/utils/format";
+import { WishlistToggleForm } from "@/features/wishlist/components/wishlist-toggle-form";
 
 export function ProductGrid({
   emptyDescription,
   products,
+  returnPath = "/shop",
+  wishlistedProductIds = new Set<string>(),
 }: {
   emptyDescription: string;
   products: CatalogProductCard[];
+  returnPath?: string;
+  wishlistedProductIds?: Set<string>;
 }) {
   if (products.length === 0) {
     return (
@@ -45,6 +50,13 @@ export function ProductGrid({
           }
           unavailable={!product.isAvailable}
           variantSummary={product.variantSummary}
+          wishlistAction={
+            <WishlistToggleForm
+              isWishlisted={wishlistedProductIds.has(product.id)}
+              productId={product.id}
+              returnPath={returnPath}
+            />
+          }
         />
       ))}
     </div>

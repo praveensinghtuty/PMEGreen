@@ -10,7 +10,7 @@ insert into public.categories (
   is_active
 )
 values (
-  '30000000-0000-0000-0000-000000000001',
+  '30000000-0000-4000-8000-000000000001',
   'Catalog Verification',
   'catalog-verification',
   'Development-only catalog verification category.',
@@ -35,8 +35,8 @@ insert into public.products (
 )
 values
   (
-    '30000000-0000-0000-0000-000000000101',
-    '30000000-0000-0000-0000-000000000001',
+    '30000000-0000-4000-8000-000000000101',
+    '30000000-0000-4000-8000-000000000001',
     'Catalog Verification Product',
     'catalog-verification-product',
     'Development-only product for storefront route verification.',
@@ -44,8 +44,8 @@ values
     0
   ),
   (
-    '30000000-0000-0000-0000-000000000102',
-    '30000000-0000-0000-0000-000000000001',
+    '30000000-0000-4000-8000-000000000102',
+    '30000000-0000-4000-8000-000000000001',
     'Hidden Catalog Verification Product',
     'hidden-catalog-verification-product',
     'Development-only hidden product for visibility verification.',
@@ -74,8 +74,8 @@ insert into public.product_variants (
   sort_order
 )
 values (
-  '30000000-0000-0000-0000-000000000201',
-  '30000000-0000-0000-0000-000000000101',
+  '30000000-0000-4000-8000-000000000201',
+  '30000000-0000-4000-8000-000000000101',
   'Verification option',
   1,
   'piece',

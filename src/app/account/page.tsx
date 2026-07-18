@@ -24,8 +24,9 @@ export default async function AccountPage() {
         </p>
         <h1 className="mt-3 text-3xl font-semibold">Customer account</h1>
         <p className="mt-4 max-w-2xl leading-7 text-muted-foreground">
-          You are signed in through Supabase Auth. Profile, address, wishlist,
-          cart, and order features continue in later phases.
+          You are signed in through Supabase Auth. Wishlist and cart features
+          are available now. Address, checkout, and order features continue in
+          later phases.
         </p>
         <dl className="mt-6 rounded-lg border border-border bg-card p-5 text-sm shadow-sm">
           <div className="grid gap-1 sm:grid-cols-[8rem_1fr]">

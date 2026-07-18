@@ -14,6 +14,7 @@ import {
   parseCatalogSearchParams,
   parseSlug,
 } from "@/features/catalog/utils/params";
+import { getWishlistProductIds } from "@/features/wishlist/queries/wishlist";
 import { canonicalMetadata } from "@/lib/seo/metadata";
 
 type CategoryPageProps = {
@@ -68,11 +69,14 @@ export default async function CategoryDetailPage({
   }
 
   const catalogParams = parseCatalogSearchParams((await searchParams) ?? {});
-  const catalogPage = await getPublicProductCards({
-    category,
-    page: catalogParams.page,
-    sort: catalogParams.sort,
-  });
+  const [catalogPage, wishlistedProductIds] = await Promise.all([
+    getPublicProductCards({
+      category,
+      page: catalogParams.page,
+      sort: catalogParams.sort,
+    }),
+    getWishlistProductIds(),
+  ]);
 
   return (
     <StoreShell>
@@ -87,6 +91,8 @@ export default async function CategoryDetailPage({
         <ProductGrid
           emptyDescription="No active products are available in this category yet."
           products={catalogPage.products}
+          returnPath={`/categories/${category.slug}`}
+          wishlistedProductIds={wishlistedProductIds}
         />
         <Pagination
           category={category.slug}

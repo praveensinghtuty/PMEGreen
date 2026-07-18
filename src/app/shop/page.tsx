@@ -11,6 +11,7 @@ import {
   getPublicProductCards,
 } from "@/features/catalog/queries/catalog";
 import { parseCatalogSearchParams } from "@/features/catalog/utils/params";
+import { getWishlistProductIds } from "@/features/wishlist/queries/wishlist";
 import { canonicalMetadata } from "@/lib/seo/metadata";
 
 export const metadata = {
@@ -25,7 +26,7 @@ export default async function ShopPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = parseCatalogSearchParams(await searchParams);
-  const [categories, catalogPage] = await Promise.all([
+  const [categories, catalogPage, wishlistedProductIds] = await Promise.all([
     getPublicCategories(),
     getPublicProductCards({
       categorySlug: params.category,
@@ -33,6 +34,7 @@ export default async function ShopPage({
       query: params.query,
       sort: params.sort,
     }),
+    getWishlistProductIds(),
   ]);
 
   return (
@@ -55,6 +57,8 @@ export default async function ShopPage({
           <ProductGrid
             emptyDescription="No active products match the current filters. Try a different category or search term."
             products={catalogPage.products}
+            returnPath="/shop"
+            wishlistedProductIds={wishlistedProductIds}
           />
         </div>
         <Pagination

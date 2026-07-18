@@ -9,6 +9,7 @@ import { Pagination } from "@/features/catalog/components/catalog-controls";
 import { ProductGrid } from "@/features/catalog/components/product-grid";
 import { getPublicProductCards } from "@/features/catalog/queries/catalog";
 import { parseCatalogSearchParams } from "@/features/catalog/utils/params";
+import { getWishlistProductIds } from "@/features/wishlist/queries/wishlist";
 import { canonicalMetadata } from "@/lib/seo/metadata";
 
 export const metadata = {
@@ -34,6 +35,9 @@ export default async function SearchPage({
         sort: params.sort,
       })
     : null;
+  const wishlistedProductIds = results
+    ? await getWishlistProductIds()
+    : new Set<string>();
 
   return (
     <StoreShell>
@@ -79,6 +83,8 @@ export default async function SearchPage({
               <ProductGrid
                 emptyDescription="No active products match this search. Try a different product name."
                 products={results.products}
+                returnPath="/search"
+                wishlistedProductIds={wishlistedProductIds}
               />
               <Pagination
                 page={results.page}

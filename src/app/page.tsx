@@ -17,6 +17,8 @@ import {
   getPublicProductCards,
 } from "@/features/catalog/queries/catalog";
 import { formatMoney } from "@/features/catalog/utils/format";
+import { WishlistToggleForm } from "@/features/wishlist/components/wishlist-toggle-form";
+import { getWishlistProductIds } from "@/features/wishlist/queries/wishlist";
 import { placeholderAssets, placeholderCopy } from "@/lib/placeholders/content";
 import { canonicalMetadata } from "@/lib/seo/metadata";
 
@@ -46,12 +48,13 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const [categories, catalogPage] = await Promise.all([
+  const [categories, catalogPage, wishlistedProductIds] = await Promise.all([
     getPublicCategories(),
     getPublicProductCards({
       page: 1,
       sort: "featured",
     }),
+    getWishlistProductIds(),
   ]);
   const featuredProducts = catalogPage.products.slice(0, 4);
 
@@ -161,6 +164,13 @@ export default async function HomePage() {
                   }
                   unavailable={!product.isAvailable}
                   variantSummary={product.variantSummary}
+                  wishlistAction={
+                    <WishlistToggleForm
+                      isWishlisted={wishlistedProductIds.has(product.id)}
+                      productId={product.id}
+                      returnPath="/"
+                    />
+                  }
                 />
               ))}
             </div>

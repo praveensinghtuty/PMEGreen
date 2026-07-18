@@ -1,11 +1,13 @@
 import {
   Grid2X2,
+  Heart,
   Home,
   Info,
   Leaf,
   Mail,
   Search,
   ShoppingBag,
+  ShoppingCart,
   Store,
   UserRound,
 } from "lucide-react";
@@ -13,6 +15,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
+import { getOptionalCartItemCount } from "@/features/cart/queries/cart";
 import { placeholderCopy } from "@/lib/placeholders/content";
 
 const storeLinks = [
@@ -20,6 +23,7 @@ const storeLinks = [
   { href: "/shop", label: "Shop" },
   { href: "/categories", label: "Categories" },
   { href: "/search", label: "Search" },
+  { href: "/wishlist", label: "Wishlist" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -28,11 +32,13 @@ const mobileLinks = [
   { href: "/", label: "Home", icon: Home },
   { href: "/shop", label: "Shop", icon: Store },
   { href: "/categories", label: "Categories", icon: Grid2X2 },
-  { href: "/search", label: "Search", icon: Search },
+  { href: "/cart", label: "Cart", icon: ShoppingCart },
   { href: "/account", label: "Account", icon: UserRound },
 ];
 
-export function StoreShell({ children }: { children: ReactNode }) {
+export async function StoreShell({ children }: { children: ReactNode }) {
+  const cartItemCount = await getOptionalCartItemCount();
+
   return (
     <div className="min-h-svh bg-background pb-20 text-foreground md:pb-0">
       <a
@@ -88,6 +94,27 @@ export function StoreShell({ children }: { children: ReactNode }) {
                 <Search aria-hidden="true" className="size-5" />
               </Link>
             </Button>
+            <Button aria-label="Wishlist" asChild size="icon" variant="ghost">
+              <Link href="/wishlist">
+                <Heart aria-hidden="true" className="size-5" />
+              </Link>
+            </Button>
+            <Button
+              aria-label={`Cart with ${cartItemCount} items`}
+              asChild
+              className="relative"
+              size="icon"
+              variant="ghost"
+            >
+              <Link href="/cart">
+                <ShoppingCart aria-hidden="true" className="size-5" />
+                {cartItemCount > 0 ? (
+                  <span className="absolute -right-1 -top-1 grid min-w-5 place-items-center rounded-full bg-secondary px-1 text-[0.65rem] font-semibold leading-5 text-secondary-foreground">
+                    {cartItemCount > 99 ? "99+" : cartItemCount}
+                  </span>
+                ) : null}
+              </Link>
+            </Button>
             <Button aria-label="Account" asChild size="icon" variant="ghost">
               <Link href="/account">
                 <UserRound aria-hidden="true" className="size-5" />
@@ -130,6 +157,16 @@ export function StoreShell({ children }: { children: ReactNode }) {
               <li>
                 <Link className="hover:text-foreground" href="/search">
                   Search
+                </Link>
+              </li>
+              <li>
+                <Link className="hover:text-foreground" href="/cart">
+                  Cart
+                </Link>
+              </li>
+              <li>
+                <Link className="hover:text-foreground" href="/wishlist">
+                  Wishlist
                 </Link>
               </li>
             </ul>
@@ -175,10 +212,15 @@ export function StoreShell({ children }: { children: ReactNode }) {
             return (
               <li key={link.href}>
                 <Link
-                  className="flex min-h-14 flex-col items-center justify-center gap-1 rounded-md px-1 text-[0.7rem] font-medium text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  className="relative flex min-h-14 flex-col items-center justify-center gap-1 rounded-md px-1 text-[0.7rem] font-medium text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   href={link.href}
                 >
                   <Icon aria-hidden="true" className="size-5" />
+                  {link.href === "/cart" && cartItemCount > 0 ? (
+                    <span className="absolute right-3 top-1 grid min-w-5 place-items-center rounded-full bg-secondary px-1 text-[0.65rem] font-semibold leading-5 text-secondary-foreground">
+                      {cartItemCount > 99 ? "99+" : cartItemCount}
+                    </span>
+                  ) : null}
                   <span>{link.label}</span>
                 </Link>
               </li>

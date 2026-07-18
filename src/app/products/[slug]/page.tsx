@@ -6,15 +6,17 @@ import { StoreShell } from "@/components/layout/store-shell";
 import { PageHeader } from "@/components/storefront/page-header";
 import { Section } from "@/components/storefront/section";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { AddToCartPanel } from "@/features/cart/components/add-to-cart-panel";
 import { ProductGallery } from "@/features/catalog/components/product-gallery";
 import { ProductInformation } from "@/features/catalog/components/product-information";
-import { VariantSelector } from "@/features/catalog/components/variant-selector";
 import { getPublicProductBySlug } from "@/features/catalog/queries/catalog";
 import {
   formatMoney,
   isVariantAvailable,
 } from "@/features/catalog/utils/format";
 import { parseSlug } from "@/features/catalog/utils/params";
+import { WishlistToggleForm } from "@/features/wishlist/components/wishlist-toggle-form";
+import { getWishlistProductIds } from "@/features/wishlist/queries/wishlist";
 import { absoluteUrl, canonicalMetadata } from "@/lib/seo/metadata";
 
 type ProductPageProps = {
@@ -69,8 +71,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   }
 
   const availableVariants = product.variants.filter(isVariantAvailable);
+  const wishlistedProductIds = await getWishlistProductIds();
   const structuredData =
-    product.startingPrice && availableVariants.length > 0
+    product.startingPrice !== null && availableVariants.length > 0
       ? {
           "@context": "https://schema.org",
           "@type": "Product",
@@ -106,12 +109,19 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             />
             <div className="space-y-6">
               <div>
-                <Link
-                  className="text-sm font-medium text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-                  href={`/categories/${product.category.slug}`}
-                >
-                  {product.category.name}
-                </Link>
+                <div className="flex items-start justify-between gap-4">
+                  <Link
+                    className="text-sm font-medium text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                    href={`/categories/${product.category.slug}`}
+                  >
+                    {product.category.name}
+                  </Link>
+                  <WishlistToggleForm
+                    isWishlisted={wishlistedProductIds.has(product.id)}
+                    productId={product.id}
+                    returnPath={`/products/${product.slug}`}
+                  />
+                </div>
                 <p className="mt-4 text-3xl font-semibold">
                   {product.startingPrice
                     ? `From ${formatMoney(product.startingPrice)}`
@@ -121,7 +131,10 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   {product.variantSummary}
                 </p>
               </div>
-              <VariantSelector variants={product.variants} />
+              <AddToCartPanel
+                returnPath={`/products/${product.slug}`}
+                variants={product.variants}
+              />
               <Card className="bg-muted">
                 <CardHeader>
                   <h2 className="text-lg font-semibold">Ordering note</h2>
