@@ -2,7 +2,7 @@
 
 Mobile-first commerce application for a small single-seller traditional products business in Tamil Nadu, India.
 
-This repository is currently complete through **Phase 2: Database and Authentication**. Later phases will add catalog/storefront, shopping, orders, admin workflows, import/export, and production hardening.
+This repository is currently complete through **Phase 3A: Storefront Framework**. Later phases will add live catalog queries, product detail pages, shopping, orders, admin workflows, import/export, and production hardening.
 
 ## What Is Implemented
 
@@ -21,6 +21,10 @@ This repository is currently complete through **Phase 2: Database and Authentica
 - Phone OTP application flow gated behind explicit SMS-provider configuration.
 - Protected account route and admin route with server-side role checks.
 - Secure first-admin bootstrap documentation.
+- Responsive storefront header, footer, desktop navigation, and mobile bottom navigation.
+- Home page storefront structure with hero, category, featured-product empty state, principles, story, and contact sections.
+- Placeholder Shop, Categories, Search, About, and Contact pages.
+- Reusable storefront components for sections, page headers, product cards, category cards, empty states, and skeleton loading.
 
 No product data has been imported. The supplied `product-catalog.csv` remains unchanged and is reserved for a later import phase.
 
@@ -115,3 +119,7 @@ Replace these when final business name, logo, product photography, banners, cate
 ## Catalog Note
 
 `product-catalog.csv` has been inspected only. It includes slash-separated variants and prices, some incomplete rows, and a misspelled `Prodoucts` header. Normalization, import preview, warnings, and seed/import data belong to a later phase.
+
+## Phase 3A Scope Note
+
+Phase 3A intentionally does not implement cart, checkout, orders, admin catalog management, product import, or live product queries. Empty product states are expected until Phase 3B adds public catalog data access.

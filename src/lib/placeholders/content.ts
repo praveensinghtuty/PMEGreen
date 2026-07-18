@@ -1,8 +1,8 @@
 export const placeholderCopy = {
   workingName: "PME Commerce",
-  storefrontHeadline: "A calm, mobile-first storefront foundation",
+  storefrontHeadline: "Traditional products, presented with care",
   storefrontIntro:
-    "This first phase establishes the application shell, design tokens, placeholder strategy, and setup paths for a single-seller traditional products store.",
+    "A premium storefront framework for oils, snacks, powders, honey, pickles, and personal-care products from a Tamil Nadu single-seller business.",
   replacementNote:
     "Final business name, logo, product photos, banners, contact details, and claims must be supplied before public launch.",
 } as const;
