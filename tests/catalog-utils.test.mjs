@@ -45,6 +45,9 @@ const cartSchemas = loadTypeScriptModule("src/features/cart/schemas/cart.ts");
 const addressSchemas = loadTypeScriptModule(
   "src/features/addresses/schemas/address.ts",
 );
+const adminSchemas = loadTypeScriptModule(
+  "src/features/admin/schemas/admin.ts",
+);
 const checkoutSchemas = loadTypeScriptModule(
   "src/features/checkout/schemas/checkout.ts",
 );
@@ -267,5 +270,65 @@ test("checkout validation requires UPI reference only for UPI orders", () => {
       upiReference: "",
     }).success,
     false,
+  );
+});
+
+test("admin product and variant validation rejects unsafe catalog edits", () => {
+  assert.equal(
+    adminSchemas.adminProductSchema.safeParse({
+      categoryId: "30000000-0000-4000-8000-000000000001",
+      name: "Admin Product",
+      slug: "admin-product",
+      status: "active",
+    }).success,
+    true,
+  );
+
+  assert.equal(
+    adminSchemas.adminProductSchema.safeParse({
+      categoryId: "30000000-0000-4000-8000-000000000001",
+      name: "Admin Product",
+      slug: "../bad",
+      status: "published",
+    }).success,
+    false,
+  );
+
+  assert.equal(
+    adminSchemas.adminVariantSchema.safeParse({
+      isActive: true,
+      name: "Variant",
+      price: 10,
+      productId: "30000000-0000-4000-8000-000000000101",
+      stockQuantity: -1,
+      trackInventory: true,
+    }).success,
+    false,
+  );
+});
+
+test("admin order and settings validation protects operational fields", () => {
+  assert.equal(
+    adminSchemas.adminOrderUpdateSchema.safeParse({
+      orderId: "30000000-0000-4000-8000-000000000401",
+      paymentStatus: "paid",
+      status: "confirmed",
+      trackingUrl: "https://example.test/track",
+    }).success,
+    true,
+  );
+  assert.equal(
+    adminSchemas.adminOrderUpdateSchema.safeParse({
+      orderId: "30000000-0000-4000-8000-000000000401",
+      trackingUrl: "javascript:alert(1)",
+    }).success,
+    false,
+  );
+  assert.equal(
+    adminSchemas.adminSettingsSchema.safeParse({
+      businessName: "PME Green",
+      shippingDefaultCharge: 40,
+    }).success,
+    true,
   );
 });

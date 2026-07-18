@@ -1,12 +1,9 @@
-import {
-  Boxes,
-  ChartNoAxesColumnIncreasing,
-  Image,
-  Settings,
-} from "lucide-react";
+import Link from "next/link";
 
 import { AdminShell } from "@/components/layout/admin-shell";
-import { requireAdmin } from "@/features/auth/queries/current-user";
+import { Button } from "@/components/ui/button";
+import { getAdminDashboard } from "@/features/admin/queries/dashboard";
+import { formatMoney } from "@/features/catalog/utils/format";
 
 export const metadata = {
   title: "Admin",
@@ -16,65 +13,75 @@ export const metadata = {
   },
 };
 
-const adminAreas = [
-  {
-    title: "Dashboard",
-    description: "Actionable order and store summaries will appear here later.",
-    icon: ChartNoAxesColumnIncreasing,
-  },
-  {
-    title: "Catalog",
-    description:
-      "Product, category, variant, and image tools are out of scope for Phase 1.",
-    icon: Boxes,
-  },
-  {
-    title: "Banners",
-    description:
-      "Public content controls will be added after database and catalog foundations.",
-    icon: Image,
-  },
-  {
-    title: "Settings",
-    description:
-      "Business settings and replacement assets are documented placeholders for now.",
-    icon: Settings,
-  },
-];
-
 export default async function AdminPage() {
-  await requireAdmin("/admin");
+  const dashboard = await getAdminDashboard();
+  const metrics = [
+    ["Total products", dashboard.totalProducts],
+    ["Active products", dashboard.activeProducts],
+    ["Hidden products", dashboard.hiddenProducts],
+    ["Categories", dashboard.categories],
+    ["Pending orders", dashboard.pendingOrders],
+    ["Total orders", dashboard.totalOrders],
+    ["Low-stock variants", dashboard.lowStockProducts],
+  ];
 
   return (
     <AdminShell>
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-secondary">
-            Admin shell
+            Admin
           </p>
           <h1 className="mt-3 text-3xl font-semibold">Owner workspace</h1>
           <p className="mt-3 max-w-3xl leading-7 text-muted-foreground">
-            This route is protected by server-side authentication and an admin
-            role check. Management workflows continue in later phases.
+            Actionable catalog, order, and store settings for the business.
           </p>
         </div>
 
-        <section
-          aria-label="Admin foundation areas"
-          className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
-        >
-          {adminAreas.map((area) => (
+        <section className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {metrics.map(([label, value]) => (
             <article
               className="rounded-lg border border-border bg-card p-5 shadow-sm"
-              key={area.title}
+              key={label}
             >
-              <area.icon aria-hidden="true" className="size-6 text-primary" />
-              <h2 className="mt-4 text-lg font-semibold">{area.title}</h2>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                {area.description}
-              </p>
+              <p className="text-sm text-muted-foreground">{label}</p>
+              <p className="mt-2 text-3xl font-semibold">{value}</p>
             </article>
           ))}
+        </section>
+
+        <section className="mt-8 rounded-lg border border-border bg-card p-5 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-lg font-semibold">Recent orders</h2>
+            <Button asChild size="sm" variant="outline">
+              <Link href="/admin/orders">View all</Link>
+            </Button>
+          </div>
+          <div className="mt-4 grid gap-3">
+            {dashboard.recentOrders.length > 0 ? (
+              dashboard.recentOrders.map((order) => (
+                <Link
+                  className="grid gap-2 rounded-md border border-border p-3 text-sm hover:bg-muted sm:grid-cols-[1fr_auto]"
+                  href={`/admin/orders/${order.id}`}
+                  key={order.id}
+                >
+                  <span>
+                    <span className="block font-medium">
+                      {order.orderNumber}
+                    </span>
+                    <span className="text-muted-foreground">
+                      {order.status} / payment {order.paymentStatus}
+                    </span>
+                  </span>
+                  <span className="font-semibold">
+                    {formatMoney(order.totalAmount)}
+                  </span>
+                </Link>
+              ))
+            ) : (
+              <p className="text-sm text-muted-foreground">No orders yet.</p>
+            )}
+          </div>
         </section>
       </div>
     </AdminShell>

@@ -851,6 +851,19 @@ export type Database = {
         Args: { p_quantity?: number; p_variant_id: string };
         Returns: string;
       };
+      admin_update_order: {
+        Args: {
+          p_admin_notes?: string;
+          p_courier_name?: string;
+          p_history_note?: string;
+          p_order_id: string;
+          p_payment_status?: Database["public"]["Enums"]["payment_status"];
+          p_status?: Database["public"]["Enums"]["order_status"];
+          p_tracking_number?: string;
+          p_tracking_url?: string;
+        };
+        Returns: string;
+      };
       has_role: {
         Args: { required_role: Database["public"]["Enums"]["app_role"] };
         Returns: boolean;

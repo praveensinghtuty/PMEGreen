@@ -1,11 +1,24 @@
-import { Home, LayoutDashboard, Package, Settings } from "lucide-react";
+import {
+  FolderTree,
+  Home,
+  LayoutDashboard,
+  Package,
+  ReceiptText,
+  Settings,
+  Users,
+  Images,
+} from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 const adminLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin", label: "Products", icon: Package },
-  { href: "/admin", label: "Settings", icon: Settings },
+  { href: "/admin/products", label: "Products", icon: Package },
+  { href: "/admin/categories", label: "Categories", icon: FolderTree },
+  { href: "/admin/orders", label: "Orders", icon: ReceiptText },
+  { href: "/admin/customers", label: "Customers", icon: Users },
+  { href: "/admin/banners", label: "Banners", icon: Images },
+  { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
 export function AdminShell({ children }: { children: ReactNode }) {
@@ -44,7 +57,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
         <header className="border-b border-border bg-background">
           <div className="flex min-h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
             <p className="text-sm font-medium text-muted-foreground">
-              Phase 1 responsive admin layout
+              Owner administration
             </p>
             <Link
               className="rounded-md text-sm font-medium text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
