@@ -17,7 +17,10 @@ export default function ContactPage() {
         eyebrow="Contact"
         title="Contact the store"
       />
-      <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+      <main
+        className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8"
+        id="main-content"
+      >
         <EmptyState
           description="No public contact details are shown until the owner supplies confirmed business information."
           icon={Mail}

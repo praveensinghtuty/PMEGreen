@@ -1,12 +1,18 @@
 import { StoreShell } from "@/components/layout/store-shell";
 import { CategoryCard } from "@/components/storefront/category-card";
 import { EmptyState } from "@/components/storefront/empty-state";
+import {
+  categoryGridClasses,
+  storefrontMain,
+} from "@/components/storefront/layout-classes";
 import { PageHeader } from "@/components/storefront/page-header";
 import { getPublicCategories } from "@/features/catalog/queries/catalog";
+import { canonicalMetadata } from "@/lib/seo/metadata";
 
 export const metadata = {
   title: "Categories",
   description: "Browse storefront categories.",
+  ...canonicalMetadata("/categories"),
 };
 
 export default async function CategoriesPage() {
@@ -19,9 +25,9 @@ export default async function CategoriesPage() {
         eyebrow="Categories"
         title="Browse by category"
       />
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <main className={storefrontMain} id="main-content">
         {categories.length > 0 ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className={categoryGridClasses}>
             {categories.map((category) => (
               <CategoryCard
                 description={

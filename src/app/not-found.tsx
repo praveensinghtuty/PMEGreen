@@ -7,7 +7,10 @@ import { Button } from "@/components/ui/button";
 export default function NotFound() {
   return (
     <StoreShell>
-      <main className="mx-auto grid min-h-[calc(100svh-10rem)] max-w-3xl place-items-center px-4 py-12 sm:px-6 lg:px-8">
+      <main
+        className="mx-auto grid min-h-[calc(100svh-10rem)] max-w-3xl place-items-center px-4 py-12 sm:px-6 lg:px-8"
+        id="main-content"
+      >
         <EmptyState
           action={
             <Button asChild>

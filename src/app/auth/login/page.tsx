@@ -14,7 +14,10 @@ export const metadata = {
 export default function LoginPage() {
   return (
     <StoreShell>
-      <main className="mx-auto grid min-h-[calc(100svh-8rem)] max-w-5xl items-center px-4 py-10 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10 lg:px-8">
+      <main
+        className="mx-auto grid min-h-[calc(100svh-8rem)] max-w-5xl items-center px-4 py-10 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10 lg:px-8"
+        id="main-content"
+      >
         <div className="mb-8 lg:mb-0">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-secondary">
             Secure sign in

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { EmptyState } from "@/components/storefront/empty-state";
+import { productGridClasses } from "@/components/storefront/layout-classes";
 import { ProductCard } from "@/components/storefront/product-card";
 import { Button } from "@/components/ui/button";
 import type { CatalogProductCard } from "@/features/catalog/types/catalog";
@@ -28,7 +29,7 @@ export function ProductGrid({
   }
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className={productGridClasses}>
       {products.map((product) => (
         <ProductCard
           categoryLabel={product.category.name}

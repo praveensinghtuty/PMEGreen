@@ -1,4 +1,5 @@
 import { StoreShell } from "@/components/layout/store-shell";
+import { storefrontMain } from "@/components/storefront/layout-classes";
 import { PageHeader } from "@/components/storefront/page-header";
 import {
   CatalogControls,
@@ -10,10 +11,12 @@ import {
   getPublicProductCards,
 } from "@/features/catalog/queries/catalog";
 import { parseCatalogSearchParams } from "@/features/catalog/utils/params";
+import { canonicalMetadata } from "@/lib/seo/metadata";
 
 export const metadata = {
   title: "Shop",
   description: "Browse products from the storefront catalog.",
+  ...canonicalMetadata("/shop"),
 };
 
 export default async function ShopPage({
@@ -39,12 +42,14 @@ export default async function ShopPage({
         eyebrow="Shop"
         title="All products"
       />
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <main className={storefrontMain} id="main-content">
         <CatalogControls
           categories={categories}
+          productCount={catalogPage.products.length}
           query={params.query}
           selectedCategory={params.category}
           sort={params.sort}
+          totalProducts={catalogPage.total}
         />
         <div className="mt-8">
           <ProductGrid

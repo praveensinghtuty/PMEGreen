@@ -44,21 +44,24 @@ export function VariantSelector({ variants }: { variants: CatalogVariant[] }) {
       <h2 id="variant-heading" className="text-lg font-semibold">
         Select size or option
       </h2>
-      <div className="mt-3 grid gap-2 sm:grid-cols-2">
+      <div className="mt-3 grid gap-2 sm:grid-cols-2" role="radiogroup">
         {variants.map((variant) => {
           const available = isVariantAvailable(variant);
+          const selected = variant.id === selectedVariant?.id;
 
           return (
             <button
+              aria-checked={selected}
               className={cn(
-                "min-h-16 rounded-md border p-3 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                variant.id === selectedVariant?.id
-                  ? "border-primary bg-muted"
+                "min-h-16 rounded-md border p-3 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-60",
+                selected
+                  ? "border-primary bg-muted shadow-sm"
                   : "border-border bg-card hover:border-primary/50",
               )}
               disabled={!available}
               key={variant.id}
               onClick={() => setSelectedVariantId(variant.id)}
+              role="radio"
               type="button"
             >
               <span className="block text-sm font-semibold">
@@ -78,7 +81,7 @@ export function VariantSelector({ variants }: { variants: CatalogVariant[] }) {
       </div>
       {selectedVariant ? (
         <p className="mt-4 text-sm leading-6 text-muted-foreground">
-          Selected: {formatVariantMeasure(selectedVariant)} ·{" "}
+          Selected: {formatVariantMeasure(selectedVariant)} -{" "}
           {formatMoney(selectedVariant.price)}
         </p>
       ) : null}

@@ -15,7 +15,10 @@ export default async function AccountPage() {
 
   return (
     <StoreShell>
-      <main className="mx-auto min-h-[calc(100svh-8rem)] max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+      <main
+        className="mx-auto min-h-[calc(100svh-8rem)] max-w-4xl px-4 py-10 sm:px-6 lg:px-8"
+        id="main-content"
+      >
         <p className="text-sm font-semibold uppercase tracking-[0.14em] text-secondary">
           Account
         </p>

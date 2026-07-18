@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { storefrontContainer } from "@/components/storefront/layout-classes";
+
 type PageHeaderProps = {
   eyebrow?: string;
   title: string;
@@ -15,10 +17,12 @@ export function PageHeader({
 }: PageHeaderProps) {
   return (
     <header className="border-b border-border bg-muted">
-      <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-10 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8">
+      <div
+        className={`${storefrontContainer} flex flex-col gap-5 py-9 sm:py-10 lg:flex-row lg:items-end lg:justify-between`}
+      >
         <div className="max-w-3xl">
           {eyebrow ? (
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-secondary">
+            <p className="text-sm font-semibold uppercase tracking-[0.12em] text-secondary">
               {eyebrow}
             </p>
           ) : null}

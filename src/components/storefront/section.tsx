@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { storefrontContainer } from "@/components/storefront/layout-classes";
 import { cn } from "@/lib/utils/cn";
 
 type SectionProps = {
@@ -20,13 +21,8 @@ export function Section({
   title,
 }: SectionProps) {
   return (
-    <section className={cn("py-10 sm:py-14", className)}>
-      <div
-        className={cn(
-          "mx-auto max-w-6xl px-4 sm:px-6 lg:px-8",
-          contentClassName,
-        )}
-      >
+    <section className={cn("py-9 sm:py-12 lg:py-14", className)}>
+      <div className={cn(storefrontContainer, contentClassName)}>
         {title ? (
           <div className="max-w-3xl">
             {eyebrow ? (

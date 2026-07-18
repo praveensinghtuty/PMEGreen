@@ -26,6 +26,37 @@ type ProductRow = Tables<"products">;
 type VariantRow = Tables<"product_variants">;
 type ImageRow = Tables<"product_images">;
 
+type PublicCategoryRow = Pick<
+  CategoryRow,
+  "description" | "id" | "image_path" | "name" | "slug"
+>;
+type PublicProductCardRow = Pick<
+  ProductRow,
+  "category_id" | "created_at" | "id" | "name" | "short_description" | "slug"
+>;
+type PublicVariantRow = Pick<
+  VariantRow,
+  | "compare_at_price"
+  | "id"
+  | "is_default"
+  | "name"
+  | "price"
+  | "product_id"
+  | "stock_quantity"
+  | "track_inventory"
+  | "unit"
+  | "value"
+>;
+type PublicImageRow = Pick<
+  ImageRow,
+  | "alt_text"
+  | "id"
+  | "is_primary"
+  | "product_id"
+  | "sort_order"
+  | "storage_path"
+>;
+
 function toPublicStorageUrl(
   bucket: "product-images" | "site-assets",
   path: string,
@@ -52,7 +83,7 @@ function toPublicStorageUrl(
   return `${config.url}/storage/v1/object/public/${bucket}/${encodedPath}`;
 }
 
-function mapCategory(row: CategoryRow): CatalogCategory {
+function mapCategory(row: PublicCategoryRow): CatalogCategory {
   return {
     id: row.id,
     description: row.description,
@@ -64,7 +95,7 @@ function mapCategory(row: CategoryRow): CatalogCategory {
   };
 }
 
-function mapVariant(row: VariantRow): CatalogVariantWithProductId {
+function mapVariant(row: PublicVariantRow): CatalogVariantWithProductId {
   return {
     id: row.id,
     compareAtPrice: row.compare_at_price,
@@ -79,7 +110,7 @@ function mapVariant(row: VariantRow): CatalogVariantWithProductId {
   };
 }
 
-function mapImage(row: ImageRow, productName: string): CatalogImage {
+function mapImage(row: PublicImageRow, productName: string): CatalogImage {
   return {
     id: row.id,
     alt: row.alt_text ?? productName,
@@ -105,7 +136,7 @@ function mapProductCard({
 }: {
   category: CatalogCategory;
   images: CatalogImage[];
-  product: ProductRow;
+  product: PublicProductCardRow;
   variants: CatalogVariant[];
 }): CatalogProductCard {
   const sortedVariants = [...variants].sort((a, b) => {
@@ -184,7 +215,7 @@ async function getPublicProductRows({
   const supabase = await createClient();
   let request = supabase
     .from("products")
-    .select("*")
+    .select("category_id, created_at, id, name, short_description, slug")
     .eq("status", "active")
     .order("sort_order", { ascending: true })
     .order("name", { ascending: true })
@@ -218,7 +249,7 @@ async function getActiveCategoriesByIds(ids: string[]) {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("categories")
-    .select("*")
+    .select("description, id, image_path, name, slug")
     .in("id", ids)
     .eq("is_active", true);
 
@@ -238,7 +269,9 @@ async function getActiveVariantsByProductIds(ids: string[]) {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("product_variants")
-    .select("*")
+    .select(
+      "compare_at_price, id, is_default, name, price, product_id, stock_quantity, track_inventory, unit, value",
+    )
     .in("product_id", ids)
     .eq("is_active", true)
     .order("sort_order", { ascending: true });
@@ -271,7 +304,7 @@ async function getImagesByProductIds(
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("product_images")
-    .select("*")
+    .select("alt_text, id, is_primary, product_id, sort_order, storage_path")
     .in("product_id", ids)
     .order("is_primary", { ascending: false })
     .order("sort_order", { ascending: true });
@@ -300,7 +333,7 @@ export async function getPublicCategories() {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("categories")
-    .select("*")
+    .select("description, id, image_path, name, slug")
     .eq("is_active", true)
     .order("sort_order", { ascending: true })
     .order("name", { ascending: true });
@@ -316,7 +349,7 @@ export async function getPublicCategoryBySlug(slug: string) {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("categories")
-    .select("*")
+    .select("description, id, image_path, name, slug")
     .eq("slug", slug)
     .eq("is_active", true)
     .maybeSingle();
@@ -330,25 +363,27 @@ export async function getPublicCategoryBySlug(slug: string) {
 
 export async function getPublicProductCards({
   categorySlug,
+  category,
   page,
   query,
   sort,
 }: {
+  category?: CatalogCategory;
   categorySlug?: string;
   page: number;
   query?: string;
   sort: CatalogSort;
 }): Promise<CatalogPage> {
-  const category = categorySlug
+  const resolvedCategory = categorySlug
     ? await getPublicCategoryBySlug(categorySlug)
-    : null;
+    : (category ?? null);
 
-  if (categorySlug && !category) {
+  if ((categorySlug || category) && !resolvedCategory) {
     return { page, pageSize: PAGE_SIZE, products: [], total: 0, totalPages: 0 };
   }
 
   const productRows = await getPublicProductRows({
-    categoryId: category?.id,
+    categoryId: resolvedCategory?.id,
     query,
   });
   const productIds = productRows.map((product) => product.id);
@@ -400,7 +435,9 @@ export async function getPublicProductBySlug(
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")
-    .select("*")
+    .select(
+      "benefits, category_id, created_at, description, id, ingredients, name, shelf_life, short_description, slug, storage_instructions, usage_instructions",
+    )
     .eq("slug", slug)
     .eq("status", "active")
     .maybeSingle();

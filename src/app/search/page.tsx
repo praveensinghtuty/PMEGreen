@@ -2,16 +2,23 @@ import { Search } from "lucide-react";
 
 import { StoreShell } from "@/components/layout/store-shell";
 import { EmptyState } from "@/components/storefront/empty-state";
+import { storefrontMain } from "@/components/storefront/layout-classes";
 import { PageHeader } from "@/components/storefront/page-header";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/features/catalog/components/catalog-controls";
 import { ProductGrid } from "@/features/catalog/components/product-grid";
 import { getPublicProductCards } from "@/features/catalog/queries/catalog";
 import { parseCatalogSearchParams } from "@/features/catalog/utils/params";
+import { canonicalMetadata } from "@/lib/seo/metadata";
 
 export const metadata = {
   title: "Search",
   description: "Search storefront products.",
+  robots: {
+    index: false,
+    follow: true,
+  },
+  ...canonicalMetadata("/search"),
 };
 
 export default async function SearchPage({
@@ -35,21 +42,33 @@ export default async function SearchPage({
         eyebrow="Search"
         title="Find products"
       />
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <form className="flex flex-col gap-3 sm:flex-row" role="search">
-          <label className="sr-only" htmlFor="site-search">
-            Search products
-          </label>
-          <input
-            className="h-11 min-w-0 flex-1 rounded-md border border-border bg-background px-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-            defaultValue={params.query}
-            id="site-search"
-            maxLength={80}
-            name="q"
-            placeholder="Search by product name"
-            type="search"
-          />
-          <Button type="submit">
+      <main className={storefrontMain} id="main-content">
+        <form
+          className="rounded-lg border border-border bg-card p-4 shadow-sm sm:flex sm:items-end sm:gap-3"
+          role="search"
+        >
+          <div className="min-w-0 flex-1">
+            <label className="sr-only" htmlFor="site-search">
+              Search products
+            </label>
+            <input
+              aria-describedby="site-search-help"
+              className="h-11 w-full rounded-md border border-border bg-background px-3 text-base placeholder:text-muted-foreground/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              defaultValue={params.query}
+              id="site-search"
+              maxLength={80}
+              name="q"
+              placeholder="Search by product name"
+              type="search"
+            />
+            <p
+              className="mt-2 text-xs leading-5 text-muted-foreground"
+              id="site-search-help"
+            >
+              Searches active storefront product names only.
+            </p>
+          </div>
+          <Button className="mt-3 w-full sm:mt-0 sm:w-auto" type="submit">
             <Search aria-hidden="true" className="size-4" />
             Search
           </Button>

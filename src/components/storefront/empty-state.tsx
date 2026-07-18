@@ -16,7 +16,10 @@ export function EmptyState({
   title,
 }: EmptyStateProps) {
   return (
-    <div className="rounded-lg border border-dashed border-border bg-muted p-6 text-center sm:p-8">
+    <div
+      className="rounded-lg border border-dashed border-border bg-muted p-6 text-center sm:p-8"
+      role="status"
+    >
       <div className="mx-auto grid size-12 place-items-center rounded-full bg-background text-primary">
         <Icon aria-hidden="true" className="size-6" />
       </div>

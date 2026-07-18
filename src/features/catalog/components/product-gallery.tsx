@@ -28,14 +28,14 @@ export function ProductGallery({
     galleryImages[0];
 
   return (
-    <div>
-      <div className="relative aspect-square overflow-hidden rounded-lg border border-border bg-muted">
+    <section aria-label={`${productName} images`}>
+      <div className="relative aspect-square overflow-hidden rounded-lg border border-border bg-muted shadow-sm">
         <Image
           alt={selectedImage.alt}
           className="object-cover"
           fill
           priority
-          sizes="(min-width: 1024px) 45vw, 100vw"
+          sizes="(min-width: 1280px) 520px, (min-width: 1024px) 45vw, 100vw"
           src={selectedImage.src}
         />
       </div>
@@ -48,8 +48,9 @@ export function ProductGallery({
           {galleryImages.map((image) => (
             <button
               aria-label={`Show ${image.alt}`}
+              aria-pressed={image.id === selectedImage.id}
               className={cn(
-                "relative size-16 overflow-hidden rounded-md border bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                "relative size-16 overflow-hidden rounded-md border bg-muted transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
                 image.id === selectedImage.id
                   ? "border-primary"
                   : "border-border",
@@ -63,6 +64,6 @@ export function ProductGallery({
           ))}
         </div>
       ) : null}
-    </div>
+    </section>
   );
 }

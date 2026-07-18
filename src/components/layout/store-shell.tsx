@@ -35,6 +35,12 @@ const mobileLinks = [
 export function StoreShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-svh bg-background pb-20 text-foreground md:pb-0">
+      <a
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-ring"
+        href="#main-content"
+      >
+        Skip to content
+      </a>
       <div className="border-b border-border bg-primary text-primary-foreground">
         <div className="mx-auto flex h-9 max-w-6xl items-center justify-center px-4 text-center text-xs font-medium sm:px-6 lg:px-8">
           <Leaf aria-hidden="true" className="mr-2 size-3.5 shrink-0" />

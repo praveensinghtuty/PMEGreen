@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { StoreShell } from "@/components/layout/store-shell";
+import { storefrontMain } from "@/components/storefront/layout-classes";
 import { PageHeader } from "@/components/storefront/page-header";
 import { Pagination } from "@/features/catalog/components/catalog-controls";
 import { ProductGrid } from "@/features/catalog/components/product-grid";
@@ -13,6 +14,7 @@ import {
   parseCatalogSearchParams,
   parseSlug,
 } from "@/features/catalog/utils/params";
+import { canonicalMetadata } from "@/lib/seo/metadata";
 
 type CategoryPageProps = {
   params: Promise<{ slug: string }>;
@@ -39,6 +41,12 @@ export async function generateMetadata({
     title: category.name,
     description:
       category.description ?? `Browse active products in ${category.name}.`,
+    openGraph: {
+      description:
+        category.description ?? `Browse active products in ${category.name}.`,
+      title: category.name,
+    },
+    ...canonicalMetadata(`/categories/${category.slug}`),
   };
 }
 
@@ -61,7 +69,7 @@ export default async function CategoryDetailPage({
 
   const catalogParams = parseCatalogSearchParams((await searchParams) ?? {});
   const catalogPage = await getPublicProductCards({
-    categorySlug: category.slug,
+    category,
     page: catalogParams.page,
     sort: catalogParams.sort,
   });
@@ -75,7 +83,7 @@ export default async function CategoryDetailPage({
         eyebrow="Category"
         title={category.name}
       />
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <main className={storefrontMain} id="main-content">
         <ProductGrid
           emptyDescription="No active products are available in this category yet."
           products={catalogPage.products}
